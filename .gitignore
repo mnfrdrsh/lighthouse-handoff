@@ -1,0 +1,50 @@
+# Lighthouse Handoff — .gitignore
+# Public repo for the Chrome extension that turns PageSpeed Insights into agent-ready Markdown reports.
+
+# --- OS / System ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --- Editor / IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- Logs & temp ---
+*.log
+npm-debug.log*
+*.tmp
+tmp/
+debug/
+*.bak
+
+# --- Dependencies / Generated (NEVER commit built packages) ---
+node_modules/
+dist/
+build/
+*.crx
+*.xpi
+lighthouse-handoff*.zip
+pagespeed-report-*.md
+
+# --- Environment / Secrets (critical) ---
+.env
+.env.*
+*.pem
+*.key
+*.crt
+
+# --- Chrome / Extension specific ---
+# (dist/ already covers the packaged output from pack-extension.ps1)
+
+# --- Web store submission working files (optional: commit real screenshots when ready) ---
+# Keep placeholder images, but you may want to .gitignore real high-res personal captures if they contain private URLs
+# webstore-assets/real-*.png
+# webstore-assets/real-*.jpg
+
+# --- Misc project ---
+# Keep planning docs (IMPLEMENTATION-PLAN.md, TASKS.md, project-details.md) for history/context
+# They are useful for contributors and the project record.

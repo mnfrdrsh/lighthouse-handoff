@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lighthouse Handoff</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">⚡</div>
+      <div>
+        <h1>Lighthouse Handoff</h1>
+        <p class="subtitle">Turn PageSpeed Insights into agent-ready Markdown</p>
+      </div>
+      <button id="view-history-btn" class="history-btn">History</button>
+    </div>
+
+    <!-- Generate View -->
+    <div id="generate-view">
+      <!-- URL Section -->
+      <div class="section">
+        <label class="section-label">Target URL</label>
+        
+        <div class="url-display">
+          <span id="current-url" class="url-text">Loading current tab...</span>
+          <button id="copy-url-btn" class="icon-btn" title="Copy URL">📋</button>
+          <button id="refresh-url-btn" class="icon-btn" title="Refresh current tab URL">↻</button>
+        </div>
+
+        <div class="manual-url">
+          <input 
+            type="text" 
+            id="manual-url" 
+            placeholder="Or paste a different URL..."
+            class="input"
+          >
+        </div>
+      </div>
+
+      <!-- Strategy + Categories (side-by-side in side panel) -->
+      <div class="two-column">
+        <!-- Strategy -->
+        <div class="section">
+          <label class="section-label">Strategy</label>
+          <div class="checkbox-group">
+            <label class="checkbox-item">
+              <input type="checkbox" id="strategy-mobile" checked>
+              <span>Mobile</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="strategy-desktop" checked>
+              <span>Desktop</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Categories -->
+        <div class="section">
+          <label class="section-label">Categories</label>
+          <div class="checkbox-group">
+            <label class="checkbox-item">
+              <input type="checkbox" id="cat-performance" checked>
+              <span>Performance</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="cat-accessibility">
+              <span>Accessibility</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="cat-best-practices">
+              <span>Best Practices</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="cat-seo">
+              <span>SEO</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- API Key Status -->
+      <div class="section">
+        <div class="api-status">
+          <span class="status-label">API Key:</span>
+          <span id="api-key-status" class="status-value">Checking...</span>
+          <button id="open-options-btn" class="link-btn">Manage</button>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button id="generate-btn" class="btn btn-primary" disabled>
+          Generate Agent Report
+        </button>
+      </div>
+
+      <!-- Status / Loading Area -->
+      <div id="status-area" class="status-area">
+        <div id="status-message" class="status-message"></div>
+        <div id="loading-indicator" class="loading-indicator" hidden>
+          <div class="spinner"></div>
+          <span id="loading-text">Running PageSpeed Insights...</span>
+        </div>
+      </div>
+
+      <!-- Results Preview -->
+      <div id="results-preview" class="results-preview" hidden>
+        <div class="preview-header">
+          <span>Report ready</span>
+          <button id="download-btn" class="btn btn-small">Download .md</button>
+        </div>
+        <div class="preview-note">
+          High-quality agent-ready Markdown report generated.
+        </div>
+      </div>
+    </div>
+
+    <!-- History View (hidden by default) -->
+    <div id="history-view" class="history-view" hidden>
+      <div class="history-header">
+        <button id="back-to-generate-btn" class="link-btn">← Back</button>
+        <h2>Saved Reports</h2>
+      </div>
+
+      <div id="history-list" class="history-list">
+        <!-- Populated by JS -->
+      </div>
+
+      <div id="history-detail" class="history-detail" hidden>
+        <div class="history-detail-header">
+          <button id="close-detail-btn" class="link-btn">← Back to list</button>
+          <div class="history-detail-actions">
+            <button id="copy-history-btn" class="btn btn-small">Copy</button>
+            <button id="download-history-btn" class="btn btn-small">Download</button>
+            <button id="delete-history-btn" class="btn btn-small btn-danger">Delete</button>
+          </div>
+        </div>
+        <div class="history-meta">
+          <div><strong>URL:</strong> <span id="history-detail-url"></span></div>
+          <div><strong>Date:</strong> <span id="history-detail-date"></span></div>
+        </div>
+        <pre id="history-detail-content" class="history-content"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="sidepanel.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+# Auto normalize line endings
+* text=auto
+
+# Shell / PowerShell scripts - keep LF for cross-platform (gh actions etc.)
+*.sh text eol=lf
+*.ps1 text eol=crlf
+
+# Markdown and docs
+*.md text
+
+# Code - let git handle
+*.js text
+*.json text
+*.html text
+*.css text
+*.txt text
+
+# Binary assets (icons)
+*.png binary
+*.jpg binary
+*.webp binary
+*.svg text

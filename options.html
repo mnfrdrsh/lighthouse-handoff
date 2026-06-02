@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lighthouse Handoff — Options</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Lighthouse Handoff</h1>
+      <p class="subtitle">Settings</p>
+    </header>
+
+    <section class="card">
+      <h2>Google PageSpeed Insights API Key</h2>
+      
+      <div class="field">
+        <label for="api-key-input">API Key</label>
+        <input 
+          type="password" 
+          id="api-key-input" 
+          placeholder="AIzaSy..." 
+          class="input"
+          autocomplete="off"
+        >
+        <button id="toggle-visibility" class="link-btn">Show</button>
+      </div>
+
+      <div class="actions">
+        <button id="save-btn" class="btn btn-primary">Save Key</button>
+        <button id="clear-btn" class="btn btn-danger">Clear Key</button>
+        <button id="open-console-btn" class="btn btn-secondary" style="margin-left: auto;">Open Google Cloud Console</button>
+      </div>
+
+      <div id="save-status" class="status"></div>
+    </section>
+
+    <section class="card">
+      <h2>How to get an API key</h2>
+      <ol class="instructions">
+        <li>Go to the <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a></li>
+        <li>Create a new project (or select an existing one)</li>
+        <li>Enable the <strong>PageSpeed Insights API</strong></li>
+        <li>Create credentials → <strong>API Key</strong></li>
+        <li>(Recommended) Restrict the key to the PageSpeed Insights API</li>
+        <li>Copy the key and paste it above</li>
+      </ol>
+      <p class="note">
+        The key is stored locally in Chrome using <code>chrome.storage.sync</code>. 
+        It is never sent anywhere except directly to Google's PageSpeed Insights API.
+        See the included README.md or GETTING-STARTED.md for a full guide with screenshots.
+      </p>
+    </section>
+
+    <footer>
+      <p class="footer-text">
+        Lighthouse Handoff v0.1.0 • 
+        GitHub repository link will be provided on first public release
+      </p>
+    </footer>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
