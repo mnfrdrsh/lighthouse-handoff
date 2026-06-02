@@ -36,7 +36,7 @@ We have no control over, and are not responsible for, Google's privacy practices
 
 ## Contact
 
-This is a solo / small project. For questions or issues, open an issue on the GitHub repository (link to be added on first public release) or contact the developer.
+This is a solo / small project. For questions or issues, open an issue on the GitHub repository: https://github.com/mnfrdrsh/lighthouse-handoff or contact the developer.
 
 ## Changes to This Policy
 

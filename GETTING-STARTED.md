@@ -159,6 +159,6 @@ This is a pure Manifest V3 extension with no build step. Report generation is 10
 - Re-run after making changes to see the difference.
 - Explore the in-panel History to manage previous reports.
 
-If you run into problems or have ideas for better reports, open an issue on the repository (link will be added when the extension is published to the store or first public release).
+If you run into problems or have ideas for better reports, open an issue on the repository: https://github.com/mnfrdrsh/lighthouse-handoff
 
 **Enjoy turning slow pages into actionable agent briefs!**

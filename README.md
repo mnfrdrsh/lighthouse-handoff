@@ -17,6 +17,8 @@ Instead of "Lighthouse says X is bad", you get:
 ### Recommended: Chrome Web Store (coming soon)
 (Once published, search for "Lighthouse Handoff" or visit the store link.)
 
+**Source & issues**: https://github.com/mnfrdrsh/lighthouse-handoff
+
 ### Sideload (works today)
 1. Download the latest `.zip` from the Releases page on the repository (or clone this repo).
 2. Go to `chrome://extensions` in Chrome.
@@ -95,7 +97,7 @@ Future ideas (community welcome):
 
 ## Contributing
 
-Feedback, bug reports, and PRs are welcome! Open an issue or pull request on the repository (link will be added on first public release / Chrome Web Store page).
+Feedback, bug reports, and PRs are welcome! Open an issue or pull request on the repository: https://github.com/mnfrdrsh/lighthouse-handoff
 
 ---
 
