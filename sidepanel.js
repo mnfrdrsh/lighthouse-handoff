@@ -1,7 +1,11 @@
 // sidepanel.js — Lighthouse Handoff
 'use strict';
 
-import { generateReport } from './report-builder.js';
+import { generateReport }              from './report-builder.js';
+import { parseAndRank }               from './src/lighthouse/parser.js';
+import { runAnalysis, loadAISettings } from './src/ai/engine.js';
+import { generateCombinedMarkdown }   from './src/output/markdown.js';
+
 
 const $ = id => document.getElementById(id);
 
@@ -145,7 +149,26 @@ async function handleGenerate() {
     if (!response) throw new Error('No response from background script.');
 
     if (response.success) {
-      const markdown = generateReport(response.results, response.url);
+      // V2: AI pipeline — normalize → analyze → generate mode-specific markdown
+      let markdown;
+      try {
+        setStatus('Analysing with AI…', 'info');
+        const { summaries } = parseAndRank(response.results);
+        const settings      = await loadAISettings();
+
+        if (summaries.length > 0) {
+          // Run analysis on the primary (first) summary; multi-strategy merged by parseAndRank
+          const analysis = await runAnalysis(summaries[0], settings);
+          markdown = generateCombinedMarkdown(analysis, summaries, settings.outputMode);
+        } else {
+          // Fallback to legacy report-builder if normalization yields nothing
+          markdown = generateReport(response.results, response.url);
+        }
+      } catch (aiErr) {
+        console.warn({ error: aiErr }, 'AI analysis failed, falling back to legacy report');
+        markdown = generateReport(response.results, response.url);
+      }
+
       const id = await saveReport({
         url: response.url, markdown,
         strategies: response.results.map(r => r.strategy),
@@ -159,7 +182,6 @@ async function handleGenerate() {
   } catch (err) {
     setStatus(err.message || 'An error occurred', 'error');
   } finally {
-    // Restore button text (innerHTML was replaced with text)
     const btn = ui.btnGenerate;
     btn.innerHTML = `
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>

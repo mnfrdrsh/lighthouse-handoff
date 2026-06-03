@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Lighthouse Handoff",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Convert Google PageSpeed Insights audits into clean, coding-agent-ready Markdown reports.",
   "icons": {
     "16": "icons/icon-16.png",
@@ -35,7 +35,24 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["report.html", "report.js", "report.css", "utils/report-parser.js", "report-builder.js"],
+      "resources": [
+        "report.html", "report.js", "report.css",
+        "utils/report-parser.js",
+        "report-builder.js",
+        "src/ai/types.js",
+        "src/ai/engine.js",
+        "src/ai/providers/mock.js",
+        "src/ai/providers/ollama.js",
+        "src/ai/providers/openai.js",
+        "src/ai/prompts/cursor.js",
+        "src/ai/prompts/github.js",
+        "src/ai/prompts/client.js",
+        "src/lighthouse/normalizer.js",
+        "src/lighthouse/scoring.js",
+        "src/lighthouse/parser.js",
+        "src/output/markdown.js",
+        "src/output/exporters.js"
+      ],
       "matches": ["<all_urls>"]
     }
   ]

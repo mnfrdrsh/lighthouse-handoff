@@ -1,12 +1,22 @@
 // options.js — Lighthouse Handoff Settings
+// Updated for V2: AI engine settings section added.
+
+import { loadAISettings, saveAISettings } from './src/ai/engine.js';
 
 const elements = {
-  apiKeyInput: document.getElementById('api-key-input'),
+  apiKeyInput:        document.getElementById('api-key-input'),
   toggleVisibilityBtn: document.getElementById('toggle-visibility'),
-  saveBtn: document.getElementById('save-btn'),
-  clearBtn: document.getElementById('clear-btn'),
-  status: document.getElementById('save-status'),
-  openConsoleBtn: document.getElementById('open-console-btn'),
+  saveBtn:            document.getElementById('save-btn'),
+  clearBtn:           document.getElementById('clear-btn'),
+  status:             document.getElementById('save-status'),
+  openConsoleBtn:     document.getElementById('open-console-btn'),
+
+  // AI settings
+  providerSelect:     document.getElementById('ai-provider-select'),
+  outputModeSelect:   document.getElementById('output-mode-select'),
+  saveAiBtn:          document.getElementById('save-ai-btn'),
+  aiStatus:           document.getElementById('ai-status'),
+  providerHint:       document.getElementById('provider-hint'),
 };
 
 let isKeyVisible = false;
@@ -16,8 +26,13 @@ let isKeyVisible = false;
  */
 async function init() {
   await loadSavedKey();
+  await loadSavedAISettings();
   setupEventListeners();
 }
+
+// ---------------------------------------------------------------------------
+// API Key
+// ---------------------------------------------------------------------------
 
 /**
  * Load previously saved API key (if any)
@@ -31,7 +46,7 @@ async function loadSavedKey() {
       setTimeout(() => clearStatus(), 1600);
     }
   } catch (error) {
-    console.error('Failed to load API key:', error);
+    console.error({ error }, 'Failed to load API key');
     showStatus('Could not load saved key', 'error');
   }
 }
@@ -57,13 +72,9 @@ async function saveKey() {
   try {
     await chrome.storage.sync.set({ psiApiKey: key });
     showStatus('API key saved successfully ✓ (side panel updates automatically)', 'success');
-    
-    // Close the options page after a short delay so the user sees the confirmation
-    setTimeout(() => {
-      window.close();
-    }, 800);
+    setTimeout(() => { window.close(); }, 800);
   } catch (error) {
-    console.error('Failed to save key:', error);
+    console.error({ error }, 'Failed to save API key');
     showStatus('Failed to save key. Please try again.', 'error');
   }
 }
@@ -80,7 +91,7 @@ async function clearKey() {
     elements.apiKeyInput.value = '';
     showStatus('API key cleared', 'success');
   } catch (error) {
-    console.error('Failed to clear key:', error);
+    console.error({ error }, 'Failed to clear API key');
     showStatus('Failed to clear key', 'error');
   }
 }
@@ -94,15 +105,74 @@ function toggleKeyVisibility() {
   elements.toggleVisibilityBtn.textContent = isKeyVisible ? 'Hide' : 'Show';
 }
 
-/**
- * Set up all event listeners
- */
+// ---------------------------------------------------------------------------
+// AI Settings
+// ---------------------------------------------------------------------------
+
+const PROVIDER_HINTS = {
+  mock:   'The Mock provider generates deterministic recommendations from your report data — no AI model or internet connection required.',
+  ollama: 'Ollama runs models locally on your machine. Requires Ollama to be installed and running.',
+  openai: 'OpenAI sends your normalized report data to the OpenAI API. Requires an OpenAI API key.',
+  claude: 'Claude sends your normalized report data to the Anthropic API. Requires an Anthropic API key.',
+  liquid: 'Liquid AI runs the LEAP SDK locally. Phase 2 implementation.',
+};
+
+async function loadSavedAISettings() {
+  try {
+    const settings = await loadAISettings();
+    elements.providerSelect.value    = settings.provider;
+    elements.outputModeSelect.value  = settings.outputMode;
+    updateProviderHint(settings.provider);
+  } catch (error) {
+    console.error({ error }, 'Failed to load AI settings');
+  }
+}
+
+async function saveAISettingsHandler() {
+  const provider   = elements.providerSelect.value;
+  const outputMode = elements.outputModeSelect.value;
+
+  try {
+    await saveAISettings({ provider, outputMode });
+    showAiStatus('AI settings saved ✓', 'success');
+    setTimeout(() => clearAiStatus(), 2000);
+  } catch (error) {
+    console.error({ error }, 'Failed to save AI settings');
+    showAiStatus('Failed to save AI settings', 'error');
+  }
+}
+
+function updateProviderHint(provider) {
+  elements.providerHint.textContent = PROVIDER_HINTS[provider] ?? '';
+}
+
+function showAiStatus(message, type) {
+  elements.aiStatus.textContent = message;
+  elements.aiStatus.className = `status ${type}`;
+}
+
+function clearAiStatus() {
+  elements.aiStatus.textContent = '';
+  elements.aiStatus.className = 'status';
+}
+
+// ---------------------------------------------------------------------------
+// Event listeners
+// ---------------------------------------------------------------------------
+
 function setupEventListeners() {
   elements.saveBtn.addEventListener('click', saveKey);
   elements.clearBtn.addEventListener('click', clearKey);
   elements.toggleVisibilityBtn.addEventListener('click', toggleKeyVisibility);
+  elements.saveAiBtn.addEventListener('click', saveAISettingsHandler);
 
-  // Quick link to create the API key
+  elements.providerSelect.addEventListener('change', () => {
+    updateProviderHint(elements.providerSelect.value);
+    clearAiStatus();
+  });
+
+  elements.outputModeSelect.addEventListener('change', () => clearAiStatus());
+
   const openConsole = document.getElementById('open-console-btn');
   if (openConsole) {
     openConsole.addEventListener('click', () => {
@@ -110,37 +180,27 @@ function setupEventListeners() {
     });
   }
 
-  // Allow pressing Enter in the input to save
   elements.apiKeyInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      saveKey();
-    }
+    if (e.key === 'Enter') saveKey();
   });
 
-  // Clear status when user starts typing again
   elements.apiKeyInput.addEventListener('input', () => {
-    if (elements.status.textContent) {
-      clearStatus();
-    }
+    if (elements.status.textContent) clearStatus();
   });
 }
 
-/**
- * Show status message
- */
+// ---------------------------------------------------------------------------
+// Status helpers
+// ---------------------------------------------------------------------------
+
 function showStatus(message, type) {
   elements.status.textContent = message;
   elements.status.className = `status ${type}`;
 }
 
-/**
- * Clear status message
- */
 function clearStatus() {
   elements.status.textContent = '';
   elements.status.className = 'status';
 }
 
-// Boot the options page
-// Script is included at the end of the body, so DOM is ready. Call init directly.
 init();
