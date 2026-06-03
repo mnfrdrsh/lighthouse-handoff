@@ -1,543 +1,324 @@
-// sidepanel.js — Lighthouse Handoff Side Panel (Phase 4+)
+// sidepanel.js — Lighthouse Handoff
+'use strict';
 
 import { generateReport } from './report-builder.js';
 
-const elements = {
-  currentUrl: document.getElementById('current-url'),
-  copyUrlBtn: document.getElementById('copy-url-btn'),
-  manualUrl: document.getElementById('manual-url'),
-  strategyMobile: document.getElementById('strategy-mobile'),
-  strategyDesktop: document.getElementById('strategy-desktop'),
-  catPerformance: document.getElementById('cat-performance'),
-  catAccessibility: document.getElementById('cat-accessibility'),
-  catBestPractices: document.getElementById('cat-best-practices'),
-  catSeo: document.getElementById('cat-seo'),
-  apiKeyStatus: document.getElementById('api-key-status'),
-  generateBtn: document.getElementById('generate-btn'),
-  openOptionsBtn: document.getElementById('open-options-btn'),
-  statusMessage: document.getElementById('status-message'),
-  statusArea: document.getElementById('status-area'),
-  loadingIndicator: document.getElementById('loading-indicator'),
-  loadingText: document.getElementById('loading-text'),
-  resultsPreview: document.getElementById('results-preview'),
-  downloadBtn: document.getElementById('download-btn'),
-  refreshUrlBtn: document.getElementById('refresh-url-btn'),
+const $ = id => document.getElementById(id);
 
-  // History elements
-  viewHistoryBtn: document.getElementById('view-history-btn'),
-  historyView: document.getElementById('history-view'),
-  backToGenerateBtn: document.getElementById('back-to-generate-btn'),
-  historyList: document.getElementById('history-list'),
-  historyDetail: document.getElementById('history-detail'),
-  closeDetailBtn: document.getElementById('close-detail-btn'),
-  historyDetailUrl: document.getElementById('history-detail-url'),
-  historyDetailDate: document.getElementById('history-detail-date'),
-  historyDetailContent: document.getElementById('history-detail-content'),
-  copyHistoryBtn: document.getElementById('copy-history-btn'),
-  downloadHistoryBtn: document.getElementById('download-history-btn'),
-  deleteHistoryBtn: document.getElementById('delete-history-btn'),
+const ui = {
+  viewMain:    $('view-main'),
+  viewHistory: $('view-history'),
+
+  urlInput:        $('url-input'),
+  strategyMobile:  $('strategy-mobile'),
+  strategyDesktop: $('strategy-desktop'),
+  btnGenerate:     $('btn-generate'),
+  statusLine:      $('status-line'),
+  recentList:      $('recent-history-list'),
+  btnViewAll:      $('view-all-history-link'),
+  btnHistory:      $('btn-history'),
+  apiKeyStatus:    $('api-key-status'),
+  openOptions:     $('open-options-btn'),
+  btnBackMain:     $('btn-back-main'),
+  historyList:     $('history-list'),
 };
 
 let currentTabUrl = '';
-let lastMarkdown = null;
-let lastUrl = '';
+const STORAGE_KEY   = 'savedReports';
+const MAX_REPORTS   = 20;
+const ALL_CATS      = ['performance', 'accessibility', 'best-practices', 'seo'];
 
-let currentHistoryReport = null; // For viewing in detail
-
-/**
- * Initialize the side panel
- */
+/* ── Init ─────────────────────────────── */
 async function init() {
-  await loadCurrentTabUrl();
-  await updateApiKeyStatus();
-  setupEventListeners();
-  updateGenerateButtonState();
+  await detectTabUrl();
+  await refreshApiStatus();
+  await renderRecentHistory();
+  bindEvents();
 
-  // Listen for tab changes so the URL updates when user switches tabs.
-  // Use the specific tab from the event when possible for reliability in side panels.
-  chrome.tabs.onActivated.addListener((activeInfo) => {
-    chrome.tabs.get(activeInfo.tabId).then(loadCurrentTabFromTab).catch(() => loadCurrentTabUrl());
+  chrome.tabs.onActivated.addListener(info =>
+    chrome.tabs.get(info.tabId).then(applyTabUrl).catch(detectTabUrl)
+  );
+  chrome.tabs.onUpdated.addListener((id, change, tab) => {
+    if (change.status === 'complete') tab ? applyTabUrl(tab) : detectTabUrl();
   });
-  chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.status === 'complete' && tab) {
-      loadCurrentTabFromTab(tab);
-    } else if (changeInfo.status === 'complete') {
-      loadCurrentTabUrl();
-    }
+  chrome.windows.onFocusChanged.addListener(wid => {
+    if (wid !== chrome.windows.WINDOW_ID_NONE) detectTabUrl();
   });
-
-  // Listen for storage changes so API key status updates live if user adds key in Options while side panel is open
-  chrome.storage.onChanged.addListener((changes, namespace) => {
-    if (namespace === 'sync' && changes.psiApiKey) {
-      updateApiKeyStatus();
-    }
-  });
-
-  // Extra robustness: re-detect URL if the browser window focus changes (e.g. switching windows)
-  chrome.windows.onFocusChanged.addListener((windowId) => {
-    if (windowId !== chrome.windows.WINDOW_ID_NONE) {
-      loadCurrentTabUrl();
-    }
+  chrome.storage.onChanged.addListener((changes, ns) => {
+    if (ns === 'sync' && changes.psiApiKey) refreshApiStatus();
   });
 }
 
-/**
- * Load the URL from the active tab using query (fallback)
- */
-async function loadCurrentTabUrl() {
+/* ── URL ──────────────────────────────── */
+async function detectTabUrl() {
   try {
-    // Use lastFocusedWindow for better reliability in side panels
     const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-    if (tab) {
-      loadCurrentTabFromTab(tab);
-    }
-  } catch (error) {
-    console.error('Error querying current tab:', error);
-    if (elements.currentUrl) {
-      elements.currentUrl.textContent = 'Error detecting URL';
-      elements.currentUrl.style.color = '#dc2626';
-    }
-    updateGenerateButtonState();
+    if (tab) applyTabUrl(tab);
+  } catch {
+    setUrlField('', 'Could not detect tab');
   }
 }
 
-/**
- * Set the current tab URL from a tab object (preferred when we have the tab from event)
- */
-function loadCurrentTabFromTab(tab) {
-  if (!tab || !tab.url) {
-    if (elements.currentUrl) {
-      elements.currentUrl.textContent = 'Could not detect URL';
-      elements.currentUrl.style.color = '#94a3b8';
-    }
-    updateGenerateButtonState();
-    return;
-  }
-
+function applyTabUrl(tab) {
+  if (!tab?.url) { setUrlField('', 'Could not detect URL'); return; }
   if (tab.url.startsWith('http://') || tab.url.startsWith('https://')) {
     currentTabUrl = tab.url;
-    if (elements.currentUrl) {
-      elements.currentUrl.textContent = tab.url;
-      elements.currentUrl.style.color = '#0f172a';
-    }
+    setUrlField(tab.url, '');
   } else {
-    if (elements.currentUrl) {
-      elements.currentUrl.textContent = 'Not a web page (chrome://, etc.)';
-      elements.currentUrl.style.color = '#94a3b8';
-    }
+    currentTabUrl = '';
+    setUrlField('', 'Not a web page');
   }
-  updateGenerateButtonState();
+  syncBtn();
 }
 
-/**
- * Update the API key status indicator
- */
-async function updateApiKeyStatus() {
-  if (!elements.apiKeyStatus) return;
+function setUrlField(value, placeholder) {
+  // Only overwrite if the user hasn't manually typed something
+  if (!ui.urlInput.dataset.userEdited) {
+    ui.urlInput.value = value;
+    ui.urlInput.placeholder = placeholder || 'Detecting tab…';
+  }
+  syncBtn();
+}
+
+/* ── API Status ───────────────────────── */
+async function refreshApiStatus() {
   try {
-    const result = await chrome.storage.sync.get(['psiApiKey']);
-    const hasKey = result.psiApiKey && result.psiApiKey.length > 10;
-
-    if (hasKey) {
-      elements.apiKeyStatus.textContent = 'Configured ✓';
-      elements.apiKeyStatus.className = 'status-value ready';
-    } else {
-      elements.apiKeyStatus.textContent = 'Not set — click Manage to add your key';
-      elements.apiKeyStatus.className = 'status-value missing';
-    }
-  } catch (error) {
-    console.error('Error checking API key:', error);
-    elements.apiKeyStatus.textContent = 'Error';
-    elements.apiKeyStatus.className = 'status-value missing';
+    const { psiApiKey } = await chrome.storage.sync.get('psiApiKey');
+    const ok = psiApiKey && psiApiKey.length > 10;
+    ui.apiKeyStatus.textContent = ok ? 'Configured ✓' : 'Not configured';
+    ui.apiKeyStatus.className   = ok ? 'sp-api-badge ready' : 'sp-api-badge missing';
+  } catch {
+    ui.apiKeyStatus.textContent = 'Unknown';
+    ui.apiKeyStatus.className   = 'sp-api-badge missing';
   }
 }
 
-/**
- * Set up all event listeners
- */
-function setupEventListeners() {
-  elements.copyUrlBtn.addEventListener('click', handleCopyUrl);
-  elements.manualUrl.addEventListener('input', updateGenerateButtonState);
+/* ── Button enable/disable ────────────── */
+function syncBtn() {
+  const url = ui.urlInput.value.trim() || currentTabUrl;
+  const hasStrat = ui.strategyMobile.checked || ui.strategyDesktop.checked;
+  ui.btnGenerate.disabled = !(url && hasStrat);
+}
 
-  // Strategy & Category checkboxes
-  elements.strategyMobile.addEventListener('change', updateGenerateButtonState);
-  elements.strategyDesktop.addEventListener('change', updateGenerateButtonState);
-  elements.catPerformance.addEventListener('change', updateGenerateButtonState);
-  elements.catAccessibility.addEventListener('change', updateGenerateButtonState);
-  elements.catBestPractices.addEventListener('change', updateGenerateButtonState);
-  elements.catSeo.addEventListener('change', updateGenerateButtonState);
-
-  elements.generateBtn.addEventListener('click', handleGenerateClick);
-  elements.openOptionsBtn.addEventListener('click', () => {
-    chrome.runtime.openOptionsPage();
+/* ── Events ───────────────────────────── */
+function bindEvents() {
+  ui.urlInput.addEventListener('input', () => {
+    if (ui.urlInput.value.trim()) {
+      ui.urlInput.dataset.userEdited = '1';
+    } else {
+      delete ui.urlInput.dataset.userEdited;
+      // Restore tab URL if cleared
+      if (currentTabUrl) { ui.urlInput.value = currentTabUrl; }
+    }
+    syncBtn();
   });
 
-  if (elements.downloadBtn) {
-    elements.downloadBtn.addEventListener('click', handleDownloadReport);
-  }
+  ui.strategyMobile.addEventListener('change', syncBtn);
+  ui.strategyDesktop.addEventListener('change', syncBtn);
 
-  if (elements.refreshUrlBtn) {
-    elements.refreshUrlBtn.addEventListener('click', () => {
-      loadCurrentTabUrl();
-    });
-  }
+  ui.btnGenerate.addEventListener('click', handleGenerate);
+  ui.openOptions.addEventListener('click', () => chrome.runtime.openOptionsPage());
 
-  // History
-  if (elements.viewHistoryBtn) {
-    elements.viewHistoryBtn.addEventListener('click', showHistoryView);
-  }
-  if (elements.backToGenerateBtn) {
-    elements.backToGenerateBtn.addEventListener('click', showGenerateView);
-  }
-  if (elements.closeDetailBtn) {
-    elements.closeDetailBtn.addEventListener('click', () => {
-      elements.historyDetail.hidden = true;
-      elements.historyList.hidden = false;
-    });
-  }
-  if (elements.copyHistoryBtn) {
-    elements.copyHistoryBtn.addEventListener('click', handleCopyHistoryReport);
-  }
-  if (elements.downloadHistoryBtn) {
-    elements.downloadHistoryBtn.addEventListener('click', handleDownloadHistoryReport);
-  }
-  if (elements.deleteHistoryBtn) {
-    elements.deleteHistoryBtn.addEventListener('click', handleDeleteHistoryReport);
-  }
+  ui.btnHistory.addEventListener('click', showHistoryView);
+  ui.btnViewAll.addEventListener('click', showHistoryView);
+  ui.btnBackMain.addEventListener('click', showMainView);
 }
 
-function handleCopyUrl() {
-  const urlToCopy = elements.manualUrl.value.trim() || currentTabUrl;
-  if (!urlToCopy) return;
-
-  navigator.clipboard.writeText(urlToCopy)
-    .then(() => {
-      showStatus('URL copied to clipboard', 'success');
-      setTimeout(clearStatus, 1400);
-    })
-    .catch(() => {
-      const ta = document.createElement('textarea');
-      ta.value = urlToCopy;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      showStatus('URL copied', 'success');
-      setTimeout(clearStatus, 1400);
-    });
-}
-
-/**
- * Enable/disable generate button based on form state
- */
-function updateGenerateButtonState() {
-  const hasStrategy = elements.strategyMobile.checked || elements.strategyDesktop.checked;
-  const hasCategory =
-    elements.catPerformance.checked ||
-    elements.catAccessibility.checked ||
-    elements.catBestPractices.checked ||
-    elements.catSeo.checked;
-
-  const hasUrl = currentTabUrl || elements.manualUrl.value.trim().length > 0;
-
-  elements.generateBtn.disabled = !(hasStrategy && hasCategory && hasUrl);
-}
-
-/**
- * Main generate handler
- */
-async function handleGenerateClick() {
-  const url = elements.manualUrl.value.trim() || currentTabUrl;
-
+/* ── Generate ─────────────────────────── */
+async function handleGenerate() {
+  const url = ui.urlInput.value.trim() || currentTabUrl;
   const strategies = [];
-  if (elements.strategyMobile.checked) strategies.push('mobile');
-  if (elements.strategyDesktop.checked) strategies.push('desktop');
+  if (ui.strategyMobile.checked)  strategies.push('mobile');
+  if (ui.strategyDesktop.checked) strategies.push('desktop');
+  if (!url || !strategies.length) return;
 
-  const categories = [];
-  if (elements.catPerformance.checked) categories.push('performance');
-  if (elements.catAccessibility.checked) categories.push('accessibility');
-  if (elements.catBestPractices.checked) categories.push('best-practices');
-  if (elements.catSeo.checked) categories.push('seo');
-
-  if (!strategies.length || !categories.length) {
-    showStatus('Please select at least one strategy and one category.', 'error');
-    return;
-  }
-
-  setLoadingState(true, `Running PageSpeed Insights (${strategies.join(' + ')})...`);
-  hideResultsPreview();
-  clearStatus();
-
-  lastMarkdown = null;
+  ui.btnGenerate.disabled = true;
+  ui.btnGenerate.textContent = 'Running…';
+  setStatus('');
 
   try {
     const response = await chrome.runtime.sendMessage({
       type: 'RUN_PSI_AUDIT',
-      payload: { url, strategies, categories },
+      payload: { url, strategies, categories: ALL_CATS },
     });
 
-    if (!response) {
-      throw new Error('No response from background script.');
-    }
+    if (!response) throw new Error('No response from background script.');
 
     if (response.success) {
-      lastUrl = response.url;
-
-      try {
-        const markdown = generateReport(response.results, response.url);
-        lastMarkdown = markdown;
-
-        showStatus(`Report generated for ${response.results.length} strategy(ies).`, 'success');
-        showResultsPreview(markdown);
-
-        // Auto-save report locally
-        await saveReportToHistory({
-          url: response.url,
-          markdown,
-          strategies: response.results.map(r => r.strategy),
-        });
-
-      } catch (genError) {
-        console.error('Report generation failed:', genError);
-        showStatus('Report generation encountered an issue. Please try again or check the URL.', 'error');
-        hideResultsPreview();
-      }
+      const markdown = generateReport(response.results, response.url);
+      const id = await saveReport({
+        url: response.url, markdown,
+        strategies: response.results.map(r => r.strategy),
+        rawResults: response.results,
+      });
+      await renderRecentHistory();
+      if (id) chrome.tabs.create({ url: `report.html?id=${id}` });
     } else {
       handlePSIError(response);
     }
-  } catch (error) {
-    console.error('Error calling background:', error);
-    showStatus(`Error: ${error.message}`, 'error');
+  } catch (err) {
+    setStatus(err.message || 'An error occurred', 'error');
   } finally {
-    setLoadingState(false);
+    // Restore button text (innerHTML was replaced with text)
+    const btn = ui.btnGenerate;
+    btn.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+      Generate Agent Report`;
+    syncBtn();
   }
 }
 
 function handlePSIError(response) {
-  let message = response.message || 'Unknown error';
-
   if (response.error === 'NO_API_KEY') {
-    message = 'No API key set. Click "Manage" to add your PageSpeed Insights key.';
-    setTimeout(() => {
-      if (confirm('Open Options page to add your API key now?')) {
-        chrome.runtime.openOptionsPage();
-      }
-    }, 600);
-  }
-
-  showStatus(message, 'error');
-  console.warn('[Lighthouse Handoff] PSI Error:', response);
-}
-
-function showResultsPreview(markdown) {
-  elements.resultsPreview.hidden = false;
-
-  const previewNote = elements.resultsPreview.querySelector('.preview-note');
-  const header = elements.resultsPreview.querySelector('.preview-header span');
-
-  if (header) header.textContent = 'Report ready';
-
-  if (previewNote) {
-    const teaser = markdown.slice(0, 260).replace(/\n/g, ' ').trim() + '...';
-    previewNote.innerHTML = `<strong>Agent-ready Markdown generated.</strong> ${teaser}`;
-  }
-  elements.downloadBtn.textContent = 'Download .md';
-  elements.downloadBtn.disabled = false;
-}
-
-function hideResultsPreview() {
-  if (elements.resultsPreview) {
-    elements.resultsPreview.hidden = true;
-  }
-}
-
-function handleDownloadReport() {
-  if (!lastMarkdown) return;
-
-  const hostname = new URL(lastUrl || 'site').hostname.replace(/\./g, '-');
-  const filename = `pagespeed-report-${hostname}.md`;
-  const blob = new Blob([lastMarkdown], { type: 'text/markdown' });
-
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
-
-  showStatus('Markdown report downloaded', 'success');
-  setTimeout(clearStatus, 1600);
-}
-
-function setLoadingState(isLoading, message = '') {
-  elements.generateBtn.disabled = isLoading;
-
-  if (isLoading) {
-    elements.loadingIndicator.hidden = false;
-    if (message) elements.loadingText.textContent = message;
-    elements.generateBtn.textContent = 'Running...';
+    setStatus('No API key — click Manage in Settings', 'error');
   } else {
-    elements.loadingIndicator.hidden = true;
-    elements.generateBtn.textContent = 'Generate Agent Report';
-    updateGenerateButtonState();
+    setStatus(response.message || 'PSI error', 'error');
   }
 }
 
-function showStatus(message, type = '') {
-  elements.statusMessage.textContent = message;
-  elements.statusMessage.className = `status-message ${type}`;
+/* ── Status ───────────────────────────── */
+function setStatus(msg, type, clearMs) {
+  if (!msg) { ui.statusLine.hidden = true; return; }
+  ui.statusLine.textContent = msg;
+  ui.statusLine.className   = 'sp-status ' + (type || '');
+  ui.statusLine.hidden      = false;
+  if (clearMs) setTimeout(() => { ui.statusLine.hidden = true; }, clearMs);
 }
 
-function clearStatus() {
-  elements.statusMessage.textContent = '';
-  elements.statusMessage.className = 'status-message';
+/* ── Storage ──────────────────────────── */
+async function loadReports() {
+  const { [STORAGE_KEY]: list = [] } = await chrome.storage.local.get(STORAGE_KEY);
+  return list;
 }
 
-/* ========================================================================== */
-/*                        LOCAL REPORT HISTORY                                */
-/* ========================================================================== */
-
-const MAX_SAVED_REPORTS = 15;
-const STORAGE_KEY = 'savedReports';
-
-async function saveReportToHistory({ url, markdown, strategies }) {
-  try {
-    const { [STORAGE_KEY]: existing = [] } = await chrome.storage.local.get(STORAGE_KEY);
-
-    const newReport = {
-      id: Date.now().toString(36) + Math.random().toString(36).slice(2),
-      url,
-      timestamp: Date.now(),
-      markdown,
-      strategies: strategies || [],
-    };
-
-    const updated = [newReport, ...existing].slice(0, MAX_SAVED_REPORTS);
-
-    await chrome.storage.local.set({ [STORAGE_KEY]: updated });
-    console.log('[Lighthouse Handoff] Report saved to local history');
-  } catch (err) {
-    console.error('Failed to save report to history:', err);
-  }
+async function saveReport({ url, markdown, strategies, rawResults }) {
+  const existing = await loadReports();
+  const id = Date.now().toString(36) + Math.random().toString(36).slice(2);
+  const updated = [{ id, url, markdown, strategies, rawResults, timestamp: Date.now() }, ...existing].slice(0, MAX_REPORTS);
+  await chrome.storage.local.set({ [STORAGE_KEY]: updated });
+  return id;
 }
 
-async function loadSavedReports() {
-  const { [STORAGE_KEY]: reports = [] } = await chrome.storage.local.get(STORAGE_KEY);
-  return reports;
+async function deleteReport(id) {
+  const existing = await loadReports();
+  await chrome.storage.local.set({ [STORAGE_KEY]: existing.filter(r => r.id !== id) });
 }
 
-async function showHistoryView() {
-  const generateView = document.getElementById('generate-view');
-  if (generateView) generateView.style.display = 'none';
+/* ── Recent history (main view) ───────── */
+async function renderRecentHistory() {
+  const reports = await loadReports();
+  ui.recentList.innerHTML = '';
 
-  elements.historyView.hidden = false;
-  elements.historyDetail.hidden = true;
-  elements.historyList.hidden = false;
-
-  const reports = await loadSavedReports();
-  renderHistoryList(reports);
-}
-
-function showGenerateView() {
-  elements.historyView.hidden = true;
-
-  const generateView = document.getElementById('generate-view');
-  if (generateView) generateView.style.display = '';
-
-  // Force a fresh URL detection when returning from history view
-  loadCurrentTabUrl();
-  // Also refresh API key status in case it was added in options
-  updateApiKeyStatus();
-}
-
-function renderHistoryList(reports) {
-  elements.historyList.innerHTML = '';
-
-  if (reports.length === 0) {
-    elements.historyList.innerHTML = '<p style="color:#64748b; padding:12px;">No saved reports yet.</p>';
+  if (!reports.length) {
+    ui.recentList.innerHTML = '<span class="sp-empty">No reports yet.</span>';
     return;
   }
 
-  reports.forEach(report => {
-    const item = document.createElement('div');
-    item.className = 'history-item';
-
-    const date = new Date(report.timestamp).toLocaleString();
-
-    item.innerHTML = `
-      <div class="history-item-info">
-        <div class="history-item-url">${report.url}</div>
-        <div class="history-item-date">${date}</div>
-      </div>
-      <div class="history-item-actions">
-        <button class="btn btn-small view-btn">View</button>
-      </div>
-    `;
-
-    item.querySelector('.view-btn').addEventListener('click', (e) => {
-      e.stopPropagation();
-      showHistoryDetail(report);
-    });
-
-    elements.historyList.appendChild(item);
+  reports.slice(0, 3).forEach(r => {
+    ui.recentList.appendChild(makeCompactRow(r));
   });
 }
 
-function showHistoryDetail(report) {
-  currentHistoryReport = report;
+function makeCompactRow(r) {
+  let host = r.url;
+  try { host = new URL(r.url).hostname; } catch {}
 
-  elements.historyList.hidden = true;
-  elements.historyDetail.hidden = false;
-
-  elements.historyDetailUrl.textContent = report.url;
-  elements.historyDetailDate.textContent = new Date(report.timestamp).toLocaleString();
-  elements.historyDetailContent.textContent = report.markdown;
+  const el = document.createElement('div');
+  el.className = 'sp-history-row';
+  el.innerHTML = `
+    <span class="sp-history-host">${esc(host)}</span>
+    <span class="sp-history-when">${relTime(r.timestamp)}</span>`;
+  el.addEventListener('click', () => chrome.tabs.create({ url: `report.html?id=${r.id}` }));
+  return el;
 }
 
-async function handleCopyHistoryReport() {
-  if (!currentHistoryReport) return;
-  await navigator.clipboard.writeText(currentHistoryReport.markdown);
-  // Simple feedback
-  const originalText = elements.copyHistoryBtn.textContent;
-  elements.copyHistoryBtn.textContent = 'Copied!';
-  setTimeout(() => {
-    elements.copyHistoryBtn.textContent = originalText;
-  }, 1200);
+/* ── Views ────────────────────────────── */
+function showHistoryView() {
+  ui.viewMain.classList.remove('active');
+  ui.viewMain.hidden    = true;
+  ui.viewHistory.hidden = false;
+  ui.viewHistory.classList.add('active');
+  renderFullHistory();
 }
 
-function handleDownloadHistoryReport() {
-  if (!currentHistoryReport) return;
+function showMainView() {
+  ui.viewHistory.classList.remove('active');
+  ui.viewHistory.hidden = true;
+  ui.viewMain.hidden    = false;
+  ui.viewMain.classList.add('active');
+  detectTabUrl();
+  refreshApiStatus();
+  renderRecentHistory();
+}
 
-  const hostname = new URL(currentHistoryReport.url).hostname.replace(/\./g, '-');
-  const filename = `pagespeed-report-${hostname}.md`;
+/* ── Full history view ────────────────── */
+async function renderFullHistory() {
+  const reports = await loadReports();
+  ui.historyList.innerHTML = '';
 
-  const blob = new Blob([currentHistoryReport.markdown], { type: 'text/markdown' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
+  if (!reports.length) {
+    ui.historyList.innerHTML = '<span class="sp-empty">No saved reports.</span>';
+    return;
+  }
+
+  reports.forEach(r => ui.historyList.appendChild(makeFullRow(r)));
+}
+
+function makeFullRow(r) {
+  const strat = (r.strategies || []).join(' + ').toUpperCase();
+  const el = document.createElement('div');
+  el.className = 'sp-full-row';
+  el.innerHTML = `
+    <div class="sp-full-row-top">
+      <span class="sp-full-url">${esc(r.url)}</span>
+      <span class="sp-strat-badge">${esc(strat)}</span>
+    </div>
+    <div class="sp-full-row-bot">
+      <span class="sp-full-date">${new Date(r.timestamp).toLocaleString()}</span>
+      <div class="sp-full-actions">
+        <button class="sp-act-btn primary open-btn">Open</button>
+        <button class="sp-act-btn dl-btn">Download</button>
+        <button class="sp-act-btn danger del-btn">Delete</button>
+      </div>
+    </div>`;
+
+  el.querySelector('.open-btn').addEventListener('click', e => { e.stopPropagation(); chrome.tabs.create({ url: `report.html?id=${r.id}` }); });
+  el.querySelector('.dl-btn').addEventListener('click', e => { e.stopPropagation(); downloadMd(r); });
+  el.querySelector('.del-btn').addEventListener('click', async e => {
+    e.stopPropagation();
+    if (!confirm('Delete this report?')) return;
+    await deleteReport(r.id);
+    renderFullHistory();
+    renderRecentHistory();
+  });
+  el.addEventListener('click', () => chrome.tabs.create({ url: `report.html?id=${r.id}` }));
+  return el;
+}
+
+/* ── Helpers ──────────────────────────── */
+function downloadMd(r) {
+  let host = 'report';
+  try { host = new URL(r.url).hostname.replace(/\./g, '-'); } catch {}
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(new Blob([r.markdown], { type: 'text/markdown' })),
+    download: `pagespeed-${host}.md`,
+  });
   a.click();
-  URL.revokeObjectURL(url);
+  URL.revokeObjectURL(a.href);
 }
 
-async function handleDeleteHistoryReport() {
-  if (!currentHistoryReport) return;
-
-  const confirmed = confirm('Delete this saved report?');
-  if (!confirmed) return;
-
-  const { [STORAGE_KEY]: reports = [] } = await chrome.storage.local.get(STORAGE_KEY);
-  const filtered = reports.filter(r => r.id !== currentHistoryReport.id);
-
-  await chrome.storage.local.set({ [STORAGE_KEY]: filtered });
-
-  // Go back to list
-  elements.historyDetail.hidden = true;
-  elements.historyList.hidden = false;
-
-  const updatedReports = await loadSavedReports();
-  renderHistoryList(updatedReports);
+function relTime(ts) {
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60)    return 'Just now';
+  if (s < 3600)  return `${Math.floor(s/60)}h ago`;
+  if (s < 86400) return `${Math.floor(s/3600)}h ago`;
+  return `${Math.floor(s/86400)}d ago`;
 }
 
-// Boot the side panel
+function esc(s) {
+  return String(s ?? '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 document.addEventListener('DOMContentLoaded', init);

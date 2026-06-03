@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lighthouse Handoff — Report</title>
+  <link rel="stylesheet" href="report.css">
+</head>
+<body>
+
+  <div class="rpt-page">
+
+    <!-- ── Header ─────────────────────────────── -->
+    <header class="rpt-header">
+      <div class="rpt-brand">
+        <img src="icons/icon-48.png" class="rpt-logo" alt="">
+        <span class="rpt-title">Lighthouse <strong>Handoff</strong></span>
+      </div>
+
+      <nav class="rpt-tabs">
+        <button id="tab-markdown" class="rtab active">Markdown Report</button>
+        <button id="tab-json"     class="rtab">Raw PSI JSON</button>
+      </nav>
+
+      <div class="rpt-header-actions">
+        <button id="btn-copy-md" class="rpt-icon-btn" title="Copy Markdown">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+        <button id="btn-download-md" class="rpt-icon-btn" title="Download .md">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ── Loading ────────────────────────────── -->
+    <div id="rpt-loading" class="rpt-loading">
+      <div class="rpt-spinner"></div>
+      <p>Loading report data…</p>
+    </div>
+
+    <!-- ── Error ──────────────────────────────── -->
+    <div id="rpt-error" class="rpt-error" hidden>
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:#f87171"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <h2>Report Not Found</h2>
+      <p id="rpt-error-msg">We couldn't retrieve the requested report. It may have been deleted.</p>
+      <button id="btn-error-back" class="rpt-btn-back">Back to Dashboard</button>
+    </div>
+
+    <!-- ── Markdown View ──────────────────────── -->
+    <div id="rpt-markdown" class="rpt-view" hidden>
+
+      <!-- Meta bar -->
+      <div class="rpt-meta-bar">
+        <span class="rpt-meta-item"><span class="rpt-meta-key">URL:</span> <a id="meta-url" href="#" target="_blank" class="rpt-meta-link">—</a></span>
+        <span class="rpt-meta-sep">·</span>
+        <span class="rpt-meta-item"><span class="rpt-meta-key">Audited:</span> <span id="meta-date">—</span></span>
+        <span class="rpt-meta-sep">·</span>
+        <span class="rpt-meta-item"><span class="rpt-meta-key">Strategies:</span> <span id="meta-strategies" class="rpt-strat-badge">—</span></span>
+      </div>
+
+      <!-- Document body -->
+      <div class="rpt-doc" id="rpt-doc-body">
+
+        <!-- High-Impact Issues -->
+        <div class="doc-section">
+          <div class="doc-heading">
+            <span class="doc-emoji">⚠️</span>
+            <span class="doc-hash">##</span>
+            <span class="doc-section-title">High-Impact Issues</span>
+          </div>
+          <ul id="doc-issues" class="doc-list"></ul>
+        </div>
+
+        <!-- Concrete Fixes -->
+        <div class="doc-section">
+          <div class="doc-heading">
+            <span class="doc-emoji">🔧</span>
+            <span class="doc-hash">##</span>
+            <span class="doc-section-title">Concrete Fixes</span>
+          </div>
+          <ul id="doc-fixes" class="doc-list"></ul>
+        </div>
+
+        <!-- Acceptance Criteria -->
+        <div class="doc-section">
+          <div class="doc-heading">
+            <span class="doc-emoji">✅</span>
+            <span class="doc-hash">##</span>
+            <span class="doc-section-title">Acceptance Criteria</span>
+          </div>
+          <ul id="doc-criteria" class="doc-list"></ul>
+        </div>
+
+        <!-- Guardrails -->
+        <div class="doc-section">
+          <div class="doc-heading">
+            <span class="doc-emoji">🔒</span>
+            <span class="doc-hash">##</span>
+            <span class="doc-section-title">Guardrails</span>
+          </div>
+          <ul id="doc-guardrails" class="doc-list"></ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── JSON View ──────────────────────────── -->
+    <div id="rpt-json" class="rpt-view rpt-json-view" hidden>
+      <div class="json-toolbar">
+        <span class="json-label">PageSpeed Insights API Response</span>
+        <button id="btn-copy-json" class="rpt-ghost-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy JSON
+        </button>
+      </div>
+      <pre class="json-pre"><code id="json-code">Loading…</code></pre>
+    </div>
+
+  </div><!-- /rpt-page -->
+
+  <script type="module" src="report.js"></script>
+</body>
+</html>

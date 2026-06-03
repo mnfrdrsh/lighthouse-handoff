@@ -7,142 +7,133 @@
   <link rel="stylesheet" href="sidepanel.css">
 </head>
 <body>
-  <div class="container">
-    <!-- Header -->
-    <div class="header">
-      <div class="logo">⚡</div>
-      <div>
-        <h1>Lighthouse Handoff</h1>
-        <p class="subtitle">Turn PageSpeed Insights into agent-ready Markdown</p>
-      </div>
-      <button id="view-history-btn" class="history-btn">History</button>
-    </div>
 
-    <!-- Generate View -->
-    <div id="generate-view">
-      <!-- URL Section -->
-      <div class="section">
-        <label class="section-label">Target URL</label>
-        
-        <div class="url-display">
-          <span id="current-url" class="url-text">Loading current tab...</span>
-          <button id="copy-url-btn" class="icon-btn" title="Copy URL">📋</button>
-          <button id="refresh-url-btn" class="icon-btn" title="Refresh current tab URL">↻</button>
+  <!-- ── MAIN VIEW ─────────────────────────────── -->
+  <div id="view-main" class="view active">
+
+    <div class="panel-wrap">
+
+      <!-- Header -->
+      <header class="sp-header">
+        <div class="sp-brand">
+          <img src="icons/icon-48.png" class="sp-logo" alt="">
+          <span class="sp-title">Lighthouse <strong>Handoff</strong></span>
         </div>
-
-        <div class="manual-url">
-          <input 
-            type="text" 
-            id="manual-url" 
-            placeholder="Or paste a different URL..."
-            class="input"
-          >
-        </div>
-      </div>
-
-      <!-- Strategy + Categories (side-by-side in side panel) -->
-      <div class="two-column">
-        <!-- Strategy -->
-        <div class="section">
-          <label class="section-label">Strategy</label>
-          <div class="checkbox-group">
-            <label class="checkbox-item">
-              <input type="checkbox" id="strategy-mobile" checked>
-              <span>Mobile</span>
-            </label>
-            <label class="checkbox-item">
-              <input type="checkbox" id="strategy-desktop" checked>
-              <span>Desktop</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Categories -->
-        <div class="section">
-          <label class="section-label">Categories</label>
-          <div class="checkbox-group">
-            <label class="checkbox-item">
-              <input type="checkbox" id="cat-performance" checked>
-              <span>Performance</span>
-            </label>
-            <label class="checkbox-item">
-              <input type="checkbox" id="cat-accessibility">
-              <span>Accessibility</span>
-            </label>
-            <label class="checkbox-item">
-              <input type="checkbox" id="cat-best-practices">
-              <span>Best Practices</span>
-            </label>
-            <label class="checkbox-item">
-              <input type="checkbox" id="cat-seo">
-              <span>SEO</span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <!-- API Key Status -->
-      <div class="section">
-        <div class="api-status">
-          <span class="status-label">API Key:</span>
-          <span id="api-key-status" class="status-value">Checking...</span>
-          <button id="open-options-btn" class="link-btn">Manage</button>
-        </div>
-      </div>
-
-      <!-- Actions -->
-      <div class="actions">
-        <button id="generate-btn" class="btn btn-primary" disabled>
-          Generate Agent Report
+        <button id="btn-history" class="sp-btn-ghost" title="History">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          History
         </button>
-      </div>
+      </header>
 
-      <!-- Status / Loading Area -->
-      <div id="status-area" class="status-area">
-        <div id="status-message" class="status-message"></div>
-        <div id="loading-indicator" class="loading-indicator" hidden>
-          <div class="spinner"></div>
-          <span id="loading-text">Running PageSpeed Insights...</span>
-        </div>
-      </div>
+      <!-- Body -->
+      <div class="sp-body">
 
-      <!-- Results Preview -->
-      <div id="results-preview" class="results-preview" hidden>
-        <div class="preview-header">
-          <span>Report ready</span>
-          <button id="download-btn" class="btn btn-small">Download .md</button>
-        </div>
-        <div class="preview-note">
-          High-quality agent-ready Markdown report generated.
-        </div>
-      </div>
-    </div>
-
-    <!-- History View (hidden by default) -->
-    <div id="history-view" class="history-view" hidden>
-      <div class="history-header">
-        <button id="back-to-generate-btn" class="link-btn">← Back</button>
-        <h2>Saved Reports</h2>
-      </div>
-
-      <div id="history-list" class="history-list">
-        <!-- Populated by JS -->
-      </div>
-
-      <div id="history-detail" class="history-detail" hidden>
-        <div class="history-detail-header">
-          <button id="close-detail-btn" class="link-btn">← Back to list</button>
-          <div class="history-detail-actions">
-            <button id="copy-history-btn" class="btn btn-small">Copy</button>
-            <button id="download-history-btn" class="btn btn-small">Download</button>
-            <button id="delete-history-btn" class="btn btn-small btn-danger">Delete</button>
+        <!-- Analyze URL -->
+        <div class="sp-field">
+          <label class="sp-label">Analyze URL</label>
+          <div class="sp-url-wrap">
+            <svg class="sp-url-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <input id="url-input" class="sp-url-input" type="text" placeholder="Detecting tab…" autocomplete="off" spellcheck="false">
           </div>
         </div>
-        <div class="history-meta">
-          <div><strong>URL:</strong> <span id="history-detail-url"></span></div>
-          <div><strong>Date:</strong> <span id="history-detail-date"></span></div>
+
+        <!-- Strategy -->
+        <div class="sp-field">
+          <label class="sp-label">Strategy</label>
+          <div class="sp-strategy-row">
+            <label class="sp-pill">
+              <input type="checkbox" id="strategy-mobile" checked>
+              <span class="sp-pill-face">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                Mobile
+              </span>
+            </label>
+            <label class="sp-pill">
+              <input type="checkbox" id="strategy-desktop">
+              <span class="sp-pill-face">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                Desktop
+              </span>
+            </label>
+          </div>
         </div>
-        <pre id="history-detail-content" class="history-content"></pre>
+
+        <!-- Generate -->
+        <div class="sp-generate-group">
+          <button id="btn-generate" class="sp-btn-generate" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+            Generate Agent Report
+          </button>
+          <p class="sp-caption">Runs locally in your browser.</p>
+        </div>
+
+        <!-- Status -->
+        <div id="status-line" class="sp-status" hidden></div>
+
+        <!-- History -->
+        <div class="sp-section-label">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          History
+        </div>
+
+        <div id="recent-history-list" class="sp-history-list">
+          <span class="sp-empty">No reports yet.</span>
+        </div>
+
+        <button id="view-all-history-link" class="sp-view-all">View all history →</button>
+
+        <!-- Settings -->
+        <div class="sp-section-label">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+          Settings
+        </div>
+
+        <div class="sp-settings-row">
+          <div>
+            <div class="sp-label" style="font-size:10px">API Key</div>
+            <span id="api-key-status" class="sp-api-badge">Checking…</span>
+          </div>
+          <button id="open-options-btn" class="sp-btn-ghost">Manage</button>
+        </div>
+
+      </div><!-- /sp-body -->
+    </div><!-- /panel-wrap -->
+
+    <!-- Hidden compat shims -->
+    <input type="hidden" id="manual-url">
+    <input type="hidden" id="cat-performance" checked>
+    <input type="hidden" id="cat-accessibility" checked>
+    <input type="hidden" id="cat-best-practices" checked>
+    <input type="hidden" id="cat-seo" checked>
+    <div id="status-area" hidden></div>
+    <div id="status-message" hidden></div>
+    <div id="loading-indicator" hidden><span id="loading-text"></span></div>
+    <div id="results-preview" hidden><button id="download-btn" hidden></button></div>
+    <div id="current-url" hidden></div>
+    <button id="btn-copy-url" hidden></button>
+    <button id="btn-refresh-url" hidden></button>
+  </div>
+
+  <!-- ── HISTORY VIEW ───────────────────────────── -->
+  <div id="view-history" class="view" hidden>
+    <header class="sp-header">
+      <button id="btn-back-main" class="sp-btn-ghost">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Back
+      </button>
+      <span class="sp-view-title">Saved Reports</span>
+    </header>
+    <div class="sp-body">
+      <div id="history-list" class="sp-history-full"></div>
+      <!-- compat shims -->
+      <div id="history-detail" hidden>
+        <span id="history-detail-url"></span>
+        <span id="history-detail-date"></span>
+        <pre id="history-detail-content" hidden></pre>
+        <button id="close-detail-btn" hidden></button>
+        <button id="copy-history-btn" hidden></button>
+        <button id="download-history-btn" hidden></button>
+        <button id="delete-history-btn" hidden></button>
       </div>
     </div>
   </div>

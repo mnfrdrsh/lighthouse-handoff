@@ -23,7 +23,8 @@
     "activeTab",
     "storage",
     "sidePanel",
-    "tabs"
+    "tabs",
+    "unlimitedStorage"
   ],
   "host_permissions": [
     "https://www.googleapis.com/*"
@@ -31,5 +32,11 @@
   "background": {
     "service_worker": "background.js",
     "type": "module"
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["report.html", "report.js", "report.css", "utils/report-parser.js", "report-builder.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
