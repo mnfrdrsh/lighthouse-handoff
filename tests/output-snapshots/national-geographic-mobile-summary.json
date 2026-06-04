@@ -1,0 +1,79 @@
+{
+  "url": "https://www.nationalgeographic.com/",
+  "strategy": "mobile",
+  "scores": {
+    "performance": 25,
+    "accessibility": 79,
+    "seo": 87,
+    "bestPractices": 78
+  },
+  "metrics": {
+    "lcp": 12600,
+    "cls": 0.32,
+    "inp": 0,
+    "tbt": 1800
+  },
+  "rankedIssues": [
+    {
+      "id": "cumulative-layout-shift",
+      "title": "Cumulative Layout Shift",
+      "priority": "critical",
+      "impactScore": 509
+    },
+    {
+      "id": "largest-contentful-paint",
+      "title": "Largest Contentful Paint",
+      "priority": "critical",
+      "impactScore": 150
+    },
+    {
+      "id": "uses-optimized-images",
+      "title": "Efficiently encode images",
+      "priority": "high",
+      "impactScore": 115
+    },
+    {
+      "id": "modern-image-formats",
+      "title": "Serve images in next-gen formats",
+      "priority": "high",
+      "impactScore": 115
+    },
+    {
+      "id": "render-blocking-resources",
+      "title": "Eliminate render-blocking resources",
+      "priority": "high",
+      "impactScore": 113
+    },
+    {
+      "id": "offscreen-images",
+      "title": "Defer offscreen images",
+      "priority": "medium",
+      "impactScore": 105
+    },
+    {
+      "id": "uses-responsive-images",
+      "title": "Properly size images",
+      "priority": "medium",
+      "impactScore": 105
+    },
+    {
+      "id": "total-blocking-time",
+      "title": "Total Blocking Time",
+      "priority": "medium",
+      "impactScore": 70
+    }
+  ],
+  "analysisSnapshot": {
+    "executiveSummaryLength": 303,
+    "quickWinCount": 8,
+    "priorityFixCount": 5,
+    "priorityFixTitles": [
+      "Cumulative Layout Shift",
+      "Largest Contentful Paint",
+      "Efficiently encode images",
+      "Serve images in next-gen formats",
+      "Eliminate render-blocking resources"
+    ],
+    "acceptanceCriteriaCount": 7
+  }
+}

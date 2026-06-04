@@ -1,0 +1,84 @@
+{
+  "url": "https://www.airbnb.com/",
+  "strategy": "mobile",
+  "scores": {
+    "performance": 30,
+    "accessibility": 88,
+    "seo": 92,
+    "bestPractices": 92
+  },
+  "metrics": {
+    "lcp": 7800,
+    "cls": 0.12,
+    "inp": 0,
+    "tbt": 2850
+  },
+  "rankedIssues": [
+    {
+      "id": "cumulative-layout-shift",
+      "title": "Cumulative Layout Shift",
+      "priority": "critical",
+      "impactScore": 230
+    },
+    {
+      "id": "largest-contentful-paint",
+      "title": "Largest Contentful Paint",
+      "priority": "critical",
+      "impactScore": 141
+    },
+    {
+      "id": "unused-javascript",
+      "title": "Remove unused JavaScript",
+      "priority": "high",
+      "impactScore": 141
+    },
+    {
+      "id": "render-blocking-resources",
+      "title": "Eliminate render-blocking resources",
+      "priority": "high",
+      "impactScore": 136
+    },
+    {
+      "id": "mainthread-work-breakdown",
+      "title": "Minimize main-thread work",
+      "priority": "medium",
+      "impactScore": 115
+    },
+    {
+      "id": "bootup-time",
+      "title": "Reduce JavaScript execution time",
+      "priority": "medium",
+      "impactScore": 109
+    },
+    {
+      "id": "third-party-summary",
+      "title": "Reduce the impact of third-party code",
+      "priority": "medium",
+      "impactScore": 95
+    },
+    {
+      "id": "total-blocking-time",
+      "title": "Total Blocking Time",
+      "priority": "medium",
+      "impactScore": 81
+    },
+    {
+      "id": "uses-text-compression",
+      "title": "Enable text compression",
+      "priority": "medium",
+      "impactScore": 70
+    }
+  ],
+  "analysisSnapshot": {
+    "executiveSummaryLength": 302,
+    "quickWinCount": 7,
+    "priorityFixCount": 4,
+    "priorityFixTitles": [
+      "Cumulative Layout Shift",
+      "Largest Contentful Paint",
+      "Remove unused JavaScript",
+      "Eliminate render-blocking resources"
+    ],
+    "acceptanceCriteriaCount": 7
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "url": "https://www.gov.uk/",
+  "strategy": "desktop",
+  "scores": {
+    "performance": 97,
+    "accessibility": 97,
+    "seo": 92,
+    "bestPractices": 95
+  },
+  "metrics": {
+    "lcp": 980,
+    "cls": 0.01,
+    "inp": 0,
+    "tbt": 40
+  },
+  "rankedIssues": [],
+  "analysisSnapshot": {
+    "executiveSummaryLength": 261,
+    "quickWinCount": 3,
+    "priorityFixCount": 0,
+    "priorityFixTitles": [],
+    "acceptanceCriteriaCount": 6
+  }
+}

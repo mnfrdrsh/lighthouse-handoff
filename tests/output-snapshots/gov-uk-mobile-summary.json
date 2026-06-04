@@ -1,0 +1,64 @@
+{
+  "url": "https://www.gov.uk/",
+  "strategy": "mobile",
+  "scores": {
+    "performance": 85,
+    "accessibility": 97,
+    "seo": 92,
+    "bestPractices": 95
+  },
+  "metrics": {
+    "lcp": 2800,
+    "cls": 0.02,
+    "inp": 80,
+    "tbt": 320
+  },
+  "rankedIssues": [
+    {
+      "id": "largest-contentful-paint",
+      "title": "Largest Contentful Paint",
+      "priority": "critical",
+      "impactScore": 87
+    },
+    {
+      "id": "unused-javascript",
+      "title": "Remove unused JavaScript",
+      "priority": "high",
+      "impactScore": 79
+    },
+    {
+      "id": "uses-long-cache-ttl",
+      "title": "Serve static assets with an efficient cache policy",
+      "priority": "low",
+      "impactScore": 65
+    },
+    {
+      "id": "total-blocking-time",
+      "title": "Total Blocking Time",
+      "priority": "low",
+      "impactScore": 32
+    },
+    {
+      "id": "first-contentful-paint",
+      "title": "First Contentful Paint",
+      "priority": "low",
+      "impactScore": 31
+    },
+    {
+      "id": "speed-index",
+      "title": "Speed Index",
+      "priority": "low",
+      "impactScore": 29
+    }
+  ],
+  "analysisSnapshot": {
+    "executiveSummaryLength": 301,
+    "quickWinCount": 3,
+    "priorityFixCount": 2,
+    "priorityFixTitles": [
+      "Largest Contentful Paint",
+      "Remove unused JavaScript"
+    ],
+    "acceptanceCriteriaCount": 7
+  }
+}

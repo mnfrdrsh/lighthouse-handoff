@@ -1,0 +1,78 @@
+{
+  "gov-uk": {
+    "url": "https://www.gov.uk/",
+    "tag": "high-performing",
+    "strategies": [
+      "mobile",
+      "desktop"
+    ],
+    "results": [
+      {
+        "strategy": "mobile",
+        "success": true,
+        "filename": "gov-uk-mobile.json"
+      },
+      {
+        "strategy": "desktop",
+        "success": true,
+        "filename": "gov-uk-desktop.json"
+      }
+    ]
+  },
+  "wikipedia": {
+    "url": "https://www.wikipedia.org/",
+    "tag": "average",
+    "strategies": [
+      "mobile"
+    ],
+    "results": [
+      {
+        "strategy": "mobile",
+        "success": true,
+        "filename": "wikipedia-mobile.json"
+      }
+    ]
+  },
+  "cnn": {
+    "url": "https://www.cnn.com/",
+    "tag": "poor-performing",
+    "strategies": [
+      "mobile"
+    ],
+    "results": [
+      {
+        "strategy": "mobile",
+        "success": true,
+        "filename": "cnn-mobile.json"
+      }
+    ]
+  },
+  "national-geographic": {
+    "url": "https://www.nationalgeographic.com/",
+    "tag": "image-heavy",
+    "strategies": [
+      "mobile"
+    ],
+    "results": [
+      {
+        "strategy": "mobile",
+        "success": true,
+        "filename": "national-geographic-mobile.json"
+      }
+    ]
+  },
+  "airbnb": {
+    "url": "https://www.airbnb.com/",
+    "tag": "js-heavy",
+    "strategies": [
+      "mobile"
+    ],
+    "results": [
+      {
+        "strategy": "mobile",
+        "success": true,
+        "filename": "airbnb-mobile.json"
+      }
+    ]
+  }
+}

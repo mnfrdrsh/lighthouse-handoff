@@ -1,0 +1,571 @@
+[
+  {
+    "label": "gov-uk",
+    "strategy": "mobile",
+    "mode": "cursor",
+    "outFile": "gov-uk-mobile-cursor.md",
+    "scores": {
+      "performance": 85,
+      "accessibility": 97,
+      "seo": 92,
+      "bestPractices": 95
+    },
+    "metrics": {
+      "lcp": 2800,
+      "cls": 0.02,
+      "tbt": 320
+    },
+    "priorityFixCount": 2,
+    "quickWinCount": 3,
+    "qa": {
+      "issues": [],
+      "passes": [
+        "priority_fixes: 2 fix(es) generated",
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 7 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "cursor_structure: has Priority Fixes + Guardrails",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "gov-uk",
+    "strategy": "mobile",
+    "mode": "github",
+    "outFile": "gov-uk-mobile-github.md",
+    "scores": {
+      "performance": 85,
+      "accessibility": 97,
+      "seo": 92,
+      "bestPractices": 95
+    },
+    "metrics": {
+      "lcp": 2800,
+      "cls": 0.02,
+      "tbt": 320
+    },
+    "priorityFixCount": 2,
+    "quickWinCount": 3,
+    "qa": {
+      "issues": [],
+      "passes": [
+        "priority_fixes: 2 fix(es) generated",
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 7 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "github_structure: has task-list checkboxes",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "gov-uk",
+    "strategy": "mobile",
+    "mode": "client",
+    "outFile": "gov-uk-mobile-client.md",
+    "scores": {
+      "performance": 85,
+      "accessibility": 97,
+      "seo": 92,
+      "bestPractices": 95
+    },
+    "metrics": {
+      "lcp": 2800,
+      "cls": 0.02,
+      "tbt": 320
+    },
+    "priorityFixCount": 2,
+    "quickWinCount": 3,
+    "qa": {
+      "issues": [],
+      "passes": [
+        "priority_fixes: 2 fix(es) generated",
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 7 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "client_structure: technical terms simplified",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "gov-uk",
+    "strategy": "desktop",
+    "mode": "cursor",
+    "outFile": "gov-uk-desktop-cursor.md",
+    "scores": {
+      "performance": 97,
+      "accessibility": 97,
+      "seo": 92,
+      "bestPractices": 95
+    },
+    "metrics": {
+      "lcp": 980,
+      "cls": 0.01,
+      "tbt": 40
+    },
+    "priorityFixCount": 0,
+    "quickWinCount": 3,
+    "qa": {
+      "issues": [
+        "NO_PRIORITY_FIXES: analysis returned no priority fixes"
+      ],
+      "passes": [
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 6 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "cursor_structure: has Priority Fixes + Guardrails",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "gov-uk",
+    "strategy": "desktop",
+    "mode": "github",
+    "outFile": "gov-uk-desktop-github.md",
+    "scores": {
+      "performance": 97,
+      "accessibility": 97,
+      "seo": 92,
+      "bestPractices": 95
+    },
+    "metrics": {
+      "lcp": 980,
+      "cls": 0.01,
+      "tbt": 40
+    },
+    "priorityFixCount": 0,
+    "quickWinCount": 3,
+    "qa": {
+      "issues": [
+        "NO_PRIORITY_FIXES: analysis returned no priority fixes"
+      ],
+      "passes": [
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 6 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "github_structure: has task-list checkboxes",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "gov-uk",
+    "strategy": "desktop",
+    "mode": "client",
+    "outFile": "gov-uk-desktop-client.md",
+    "scores": {
+      "performance": 97,
+      "accessibility": 97,
+      "seo": 92,
+      "bestPractices": 95
+    },
+    "metrics": {
+      "lcp": 980,
+      "cls": 0.01,
+      "tbt": 40
+    },
+    "priorityFixCount": 0,
+    "quickWinCount": 3,
+    "qa": {
+      "issues": [
+        "NO_PRIORITY_FIXES: analysis returned no priority fixes"
+      ],
+      "passes": [
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 6 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "client_structure: technical terms simplified",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "gov-uk",
+    "crossModeIssue": null,
+    "crossModePass": "modes produce distinct output ✓"
+  },
+  {
+    "label": "wikipedia",
+    "strategy": "mobile",
+    "mode": "cursor",
+    "outFile": "wikipedia-mobile-cursor.md",
+    "scores": {
+      "performance": 58,
+      "accessibility": 81,
+      "seo": 90,
+      "bestPractices": 83
+    },
+    "metrics": {
+      "lcp": 4100,
+      "cls": 0.07,
+      "tbt": 550
+    },
+    "priorityFixCount": 5,
+    "quickWinCount": 7,
+    "qa": {
+      "issues": [],
+      "passes": [
+        "priority_fixes: 5 fix(es) generated",
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 7 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "cursor_structure: has Priority Fixes + Guardrails",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "wikipedia",
+    "strategy": "mobile",
+    "mode": "github",
+    "outFile": "wikipedia-mobile-github.md",
+    "scores": {
+      "performance": 58,
+      "accessibility": 81,
+      "seo": 90,
+      "bestPractices": 83
+    },
+    "metrics": {
+      "lcp": 4100,
+      "cls": 0.07,
+      "tbt": 550
+    },
+    "priorityFixCount": 5,
+    "quickWinCount": 7,
+    "qa": {
+      "issues": [],
+      "passes": [
+        "priority_fixes: 5 fix(es) generated",
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 7 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "github_structure: has task-list checkboxes",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "wikipedia",
+    "strategy": "mobile",
+    "mode": "client",
+    "outFile": "wikipedia-mobile-client.md",
+    "scores": {
+      "performance": 58,
+      "accessibility": 81,
+      "seo": 90,
+      "bestPractices": 83
+    },
+    "metrics": {
+      "lcp": 4100,
+      "cls": 0.07,
+      "tbt": 550
+    },
+    "priorityFixCount": 5,
+    "quickWinCount": 7,
+    "qa": {
+      "issues": [],
+      "passes": [
+        "priority_fixes: 5 fix(es) generated",
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 7 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "client_structure: technical terms simplified",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "wikipedia",
+    "crossModeIssue": null,
+    "crossModePass": "modes produce distinct output ✓"
+  },
+  {
+    "label": "cnn",
+    "strategy": "mobile",
+    "mode": "cursor",
+    "outFile": "cnn-mobile-cursor.md",
+    "scores": {
+      "performance": 22,
+      "accessibility": 74,
+      "seo": 84,
+      "bestPractices": 75
+    },
+    "metrics": {
+      "lcp": 8400,
+      "cls": 0.38,
+      "tbt": 4200
+    },
+    "priorityFixCount": 5,
+    "quickWinCount": 8,
+    "qa": {
+      "issues": [],
+      "passes": [
+        "priority_fixes: 5 fix(es) generated",
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 7 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "cursor_structure: has Priority Fixes + Guardrails",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "cnn",
+    "strategy": "mobile",
+    "mode": "github",
+    "outFile": "cnn-mobile-github.md",
+    "scores": {
+      "performance": 22,
+      "accessibility": 74,
+      "seo": 84,
+      "bestPractices": 75
+    },
+    "metrics": {
+      "lcp": 8400,
+      "cls": 0.38,
+      "tbt": 4200
+    },
+    "priorityFixCount": 5,
+    "quickWinCount": 8,
+    "qa": {
+      "issues": [],
+      "passes": [
+        "priority_fixes: 5 fix(es) generated",
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 7 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "github_structure: has task-list checkboxes",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "cnn",
+    "strategy": "mobile",
+    "mode": "client",
+    "outFile": "cnn-mobile-client.md",
+    "scores": {
+      "performance": 22,
+      "accessibility": 74,
+      "seo": 84,
+      "bestPractices": 75
+    },
+    "metrics": {
+      "lcp": 8400,
+      "cls": 0.38,
+      "tbt": 4200
+    },
+    "priorityFixCount": 5,
+    "quickWinCount": 8,
+    "qa": {
+      "issues": [],
+      "passes": [
+        "priority_fixes: 5 fix(es) generated",
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 7 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "client_structure: technical terms simplified",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "cnn",
+    "crossModeIssue": null,
+    "crossModePass": "modes produce distinct output ✓"
+  },
+  {
+    "label": "national-geographic",
+    "strategy": "mobile",
+    "mode": "cursor",
+    "outFile": "national-geographic-mobile-cursor.md",
+    "scores": {
+      "performance": 25,
+      "accessibility": 79,
+      "seo": 87,
+      "bestPractices": 78
+    },
+    "metrics": {
+      "lcp": 12600,
+      "cls": 0.32,
+      "tbt": 1800
+    },
+    "priorityFixCount": 5,
+    "quickWinCount": 8,
+    "qa": {
+      "issues": [],
+      "passes": [
+        "priority_fixes: 5 fix(es) generated",
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 7 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "cursor_structure: has Priority Fixes + Guardrails",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "national-geographic",
+    "strategy": "mobile",
+    "mode": "github",
+    "outFile": "national-geographic-mobile-github.md",
+    "scores": {
+      "performance": 25,
+      "accessibility": 79,
+      "seo": 87,
+      "bestPractices": 78
+    },
+    "metrics": {
+      "lcp": 12600,
+      "cls": 0.32,
+      "tbt": 1800
+    },
+    "priorityFixCount": 5,
+    "quickWinCount": 8,
+    "qa": {
+      "issues": [],
+      "passes": [
+        "priority_fixes: 5 fix(es) generated",
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 7 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "github_structure: has task-list checkboxes",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "national-geographic",
+    "strategy": "mobile",
+    "mode": "client",
+    "outFile": "national-geographic-mobile-client.md",
+    "scores": {
+      "performance": 25,
+      "accessibility": 79,
+      "seo": 87,
+      "bestPractices": 78
+    },
+    "metrics": {
+      "lcp": 12600,
+      "cls": 0.32,
+      "tbt": 1800
+    },
+    "priorityFixCount": 5,
+    "quickWinCount": 8,
+    "qa": {
+      "issues": [
+        "CLIENT: raw \"JavaScript\" term not simplified in client output"
+      ],
+      "passes": [
+        "priority_fixes: 5 fix(es) generated",
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 7 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "national-geographic",
+    "crossModeIssue": null,
+    "crossModePass": "modes produce distinct output ✓"
+  },
+  {
+    "label": "airbnb",
+    "strategy": "mobile",
+    "mode": "cursor",
+    "outFile": "airbnb-mobile-cursor.md",
+    "scores": {
+      "performance": 30,
+      "accessibility": 88,
+      "seo": 92,
+      "bestPractices": 92
+    },
+    "metrics": {
+      "lcp": 7800,
+      "cls": 0.12,
+      "tbt": 2850
+    },
+    "priorityFixCount": 4,
+    "quickWinCount": 7,
+    "qa": {
+      "issues": [],
+      "passes": [
+        "priority_fixes: 4 fix(es) generated",
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 7 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "cursor_structure: has Priority Fixes + Guardrails",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "airbnb",
+    "strategy": "mobile",
+    "mode": "github",
+    "outFile": "airbnb-mobile-github.md",
+    "scores": {
+      "performance": 30,
+      "accessibility": 88,
+      "seo": 92,
+      "bestPractices": 92
+    },
+    "metrics": {
+      "lcp": 7800,
+      "cls": 0.12,
+      "tbt": 2850
+    },
+    "priorityFixCount": 4,
+    "quickWinCount": 7,
+    "qa": {
+      "issues": [],
+      "passes": [
+        "priority_fixes: 4 fix(es) generated",
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 7 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "github_structure: has task-list checkboxes",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "airbnb",
+    "strategy": "mobile",
+    "mode": "client",
+    "outFile": "airbnb-mobile-client.md",
+    "scores": {
+      "performance": 30,
+      "accessibility": 88,
+      "seo": 92,
+      "bestPractices": 92
+    },
+    "metrics": {
+      "lcp": 7800,
+      "cls": 0.12,
+      "tbt": 2850
+    },
+    "priorityFixCount": 4,
+    "quickWinCount": 7,
+    "qa": {
+      "issues": [],
+      "passes": [
+        "priority_fixes: 4 fix(es) generated",
+        "instructions: no vague \"optimize images\" pattern detected",
+        "acceptance_criteria: 7 criteria",
+        "lcp_criteria: LCP threshold present in acceptance criteria",
+        "client_structure: technical terms simplified",
+        "certainty: no overclaiming language detected"
+      ]
+    }
+  },
+  {
+    "label": "airbnb",
+    "crossModeIssue": null,
+    "crossModePass": "modes produce distinct output ✓"
+  }
+]

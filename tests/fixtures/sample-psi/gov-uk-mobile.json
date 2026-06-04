@@ -1,0 +1,151 @@
+{
+  "lighthouseResult": {
+    "finalUrl": "https://www.gov.uk/",
+    "requestedUrl": "https://www.gov.uk/",
+    "fetchTime": "2026-06-04T13:23:43.753Z",
+    "runtimeError": null,
+    "categories": {
+      "performance": {
+        "score": 0.85,
+        "auditRefs": [
+          {
+            "id": "largest-contentful-paint",
+            "weight": 10
+          },
+          {
+            "id": "cumulative-layout-shift",
+            "weight": 15
+          },
+          {
+            "id": "interaction-to-next-paint",
+            "weight": 10
+          },
+          {
+            "id": "total-blocking-time",
+            "weight": 30
+          },
+          {
+            "id": "speed-index",
+            "weight": 10
+          },
+          {
+            "id": "first-contentful-paint",
+            "weight": 10
+          },
+          {
+            "id": "uses-long-cache-ttl",
+            "weight": 0
+          },
+          {
+            "id": "unused-javascript",
+            "weight": 0
+          }
+        ]
+      },
+      "accessibility": {
+        "score": 0.97,
+        "auditRefs": []
+      },
+      "seo": {
+        "score": 0.92,
+        "auditRefs": []
+      },
+      "best-practices": {
+        "score": 0.95,
+        "auditRefs": []
+      }
+    },
+    "audits": {
+      "largest-contentful-paint": {
+        "id": "largest-contentful-paint",
+        "title": "Largest Contentful Paint",
+        "description": "LCP marks the time at which the largest text or image is rendered.",
+        "score": 0.72,
+        "numericValue": 2800,
+        "displayValue": "2.8 s"
+      },
+      "cumulative-layout-shift": {
+        "id": "cumulative-layout-shift",
+        "title": "Cumulative Layout Shift",
+        "description": "CLS measures the sum of all unexpected layout shift scores.",
+        "score": 0.95,
+        "numericValue": 0.02,
+        "displayValue": "0.02"
+      },
+      "interaction-to-next-paint": {
+        "id": "interaction-to-next-paint",
+        "title": "Interaction to Next Paint",
+        "description": "INP measures responsiveness.",
+        "score": null,
+        "numericValue": 80,
+        "displayValue": "80 ms"
+      },
+      "total-blocking-time": {
+        "id": "total-blocking-time",
+        "title": "Total Blocking Time",
+        "description": "TBT is the total time blocked by long tasks.",
+        "score": 0.72,
+        "numericValue": 320,
+        "displayValue": "320 ms"
+      },
+      "speed-index": {
+        "id": "speed-index",
+        "title": "Speed Index",
+        "description": "Speed Index shows how quickly the contents of a page are visibly populated.",
+        "score": 0.83,
+        "numericValue": 2100,
+        "displayValue": "2.1 s"
+      },
+      "first-contentful-paint": {
+        "id": "first-contentful-paint",
+        "title": "First Contentful Paint",
+        "description": "FCP marks the time at which the first text or image is rendered.",
+        "score": 0.8,
+        "numericValue": 1800,
+        "displayValue": "1.8 s"
+      },
+      "uses-long-cache-ttl": {
+        "id": "uses-long-cache-ttl",
+        "title": "Serve static assets with an efficient cache policy",
+        "description": "Long cache lifetimes can speed up repeat visits.",
+        "score": 0.5,
+        "numericValue": null,
+        "displayValue": "3 resources found",
+        "details": {
+          "type": "table",
+          "items": [
+            {
+              "url": "https://www.gov.uk/assets/static/govuk-frontend-5.js",
+              "totalBytes": 45230,
+              "wastedBytes": 0
+            },
+            {
+              "url": "https://www.gov.uk/assets/static/main.css",
+              "totalBytes": 28400,
+              "wastedBytes": 0
+            }
+          ]
+        }
+      },
+      "unused-javascript": {
+        "id": "unused-javascript",
+        "title": "Remove unused JavaScript",
+        "description": "Reduce unused JavaScript to decrease bytes consumed by network activity.",
+        "score": 0.72,
+        "numericValue": 380,
+        "displayValue": "0.38 s potential savings",
+        "details": {
+          "type": "table",
+          "items": [
+            {
+              "url": "https://www.gov.uk/assets/static/govuk-frontend-5.js",
+              "wastedBytes": 18400,
+              "wastedMs": 120
+            }
+          ]
+        }
+      }
+    }
+  },
+  "analysisUTCTimestamp": "2026-06-04T13:23:43.754Z"
+}

@@ -111,6 +111,8 @@ function formatClientFix(fix, rank) {
  */
 function simplify(text) {
   return text
+    // Protect brand name first (before Lighthouse is replaced)
+    .replace(/Lighthouse Handoff/g,  'our tool')
     .replace(/LCP/g,                 'page load speed')
     .replace(/CLS/g,                 'visual stability')
     .replace(/INP/g,                 'responsiveness')
@@ -118,8 +120,9 @@ function simplify(text) {
     .replace(/TTFB/g,                'server response time')
     .replace(/Core Web Vitals/g,     'Google speed metrics')
     .replace(/DevTools/g,            'developer tools')
-    .replace(/Lighthouse/g,          'Google's speed test')
+    .replace(/Lighthouse/g,          "Google's speed test tool")
     .replace(/JavaScript/gi,         'website code')
+    .replace(/\bJS\b/g,              'website code')
     .replace(/CSS/gi,                'visual styling code')
     .replace(/CDN/g,                 'content delivery network')
     .replace(/`([^`]+)`/g,           '"$1"')

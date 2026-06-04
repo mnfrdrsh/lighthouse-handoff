@@ -1,0 +1,91 @@
+{
+  "url": "https://www.wikipedia.org/",
+  "strategy": "mobile",
+  "scores": {
+    "performance": 58,
+    "accessibility": 81,
+    "seo": 90,
+    "bestPractices": 83
+  },
+  "metrics": {
+    "lcp": 4100,
+    "cls": 0.07,
+    "inp": 0,
+    "tbt": 550
+  },
+  "rankedIssues": [
+    {
+      "id": "cumulative-layout-shift",
+      "title": "Cumulative Layout Shift",
+      "priority": "critical",
+      "impactScore": 161
+    },
+    {
+      "id": "largest-contentful-paint",
+      "title": "Largest Contentful Paint",
+      "priority": "critical",
+      "impactScore": 109
+    },
+    {
+      "id": "render-blocking-resources",
+      "title": "Eliminate render-blocking resources",
+      "priority": "high",
+      "impactScore": 99
+    },
+    {
+      "id": "image-alt",
+      "title": "Image elements have [alt] attributes",
+      "priority": "medium",
+      "impactScore": 95
+    },
+    {
+      "id": "unused-javascript",
+      "title": "Remove unused JavaScript",
+      "priority": "high",
+      "impactScore": 89
+    },
+    {
+      "id": "uses-optimized-images",
+      "title": "Efficiently encode images",
+      "priority": "high",
+      "impactScore": 79
+    },
+    {
+      "id": "unused-css-rules",
+      "title": "Remove unused CSS",
+      "priority": "medium",
+      "impactScore": 70
+    },
+    {
+      "id": "uses-responsive-images",
+      "title": "Properly size images",
+      "priority": "medium",
+      "impactScore": 69
+    },
+    {
+      "id": "label",
+      "title": "Form elements have associated labels",
+      "priority": "low",
+      "impactScore": 65
+    },
+    {
+      "id": "total-blocking-time",
+      "title": "Total Blocking Time",
+      "priority": "low",
+      "impactScore": 44
+    }
+  ],
+  "analysisSnapshot": {
+    "executiveSummaryLength": 301,
+    "quickWinCount": 7,
+    "priorityFixCount": 5,
+    "priorityFixTitles": [
+      "Cumulative Layout Shift",
+      "Largest Contentful Paint",
+      "Eliminate render-blocking resources",
+      "Remove unused JavaScript",
+      "Efficiently encode images"
+    ],
+    "acceptanceCriteriaCount": 7
+  }
+}

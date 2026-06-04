@@ -1,0 +1,90 @@
+{
+  "lighthouseResult": {
+    "finalUrl": "https://www.gov.uk/",
+    "requestedUrl": "https://www.gov.uk/",
+    "fetchTime": "2026-06-04T13:23:43.754Z",
+    "runtimeError": null,
+    "categories": {
+      "performance": {
+        "score": 0.97,
+        "auditRefs": [
+          {
+            "id": "largest-contentful-paint",
+            "weight": 10
+          },
+          {
+            "id": "cumulative-layout-shift",
+            "weight": 15
+          },
+          {
+            "id": "total-blocking-time",
+            "weight": 30
+          },
+          {
+            "id": "speed-index",
+            "weight": 10
+          },
+          {
+            "id": "first-contentful-paint",
+            "weight": 10
+          }
+        ]
+      },
+      "accessibility": {
+        "score": 0.97,
+        "auditRefs": []
+      },
+      "seo": {
+        "score": 0.92,
+        "auditRefs": []
+      },
+      "best-practices": {
+        "score": 0.95,
+        "auditRefs": []
+      }
+    },
+    "audits": {
+      "largest-contentful-paint": {
+        "id": "largest-contentful-paint",
+        "title": "Largest Contentful Paint",
+        "description": "LCP marks the time at which the largest text or image is rendered.",
+        "score": 0.99,
+        "numericValue": 980,
+        "displayValue": "0.98 s"
+      },
+      "cumulative-layout-shift": {
+        "id": "cumulative-layout-shift",
+        "title": "Cumulative Layout Shift",
+        "description": "CLS measures visual instability.",
+        "score": 1,
+        "numericValue": 0.01,
+        "displayValue": "0.01"
+      },
+      "total-blocking-time": {
+        "id": "total-blocking-time",
+        "title": "Total Blocking Time",
+        "description": "TBT.",
+        "score": 0.99,
+        "numericValue": 40,
+        "displayValue": "40 ms"
+      },
+      "speed-index": {
+        "id": "speed-index",
+        "title": "Speed Index",
+        "description": "Speed Index.",
+        "score": 0.99,
+        "numericValue": 780,
+        "displayValue": "0.78 s"
+      },
+      "first-contentful-paint": {
+        "id": "first-contentful-paint",
+        "title": "First Contentful Paint",
+        "description": "FCP.",
+        "score": 0.99,
+        "numericValue": 600,
+        "displayValue": "0.60 s"
+      }
+    }
+  },
+  "analysisUTCTimestamp": "2026-06-04T13:23:43.754Z"
+}

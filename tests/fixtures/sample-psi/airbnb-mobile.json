@@ -1,0 +1,282 @@
+{
+  "lighthouseResult": {
+    "finalUrl": "https://www.airbnb.com/",
+    "requestedUrl": "https://www.airbnb.com/",
+    "fetchTime": "2026-06-04T13:23:43.755Z",
+    "runtimeError": null,
+    "categories": {
+      "performance": {
+        "score": 0.3,
+        "auditRefs": [
+          {
+            "id": "largest-contentful-paint",
+            "weight": 10
+          },
+          {
+            "id": "cumulative-layout-shift",
+            "weight": 15
+          },
+          {
+            "id": "total-blocking-time",
+            "weight": 30
+          },
+          {
+            "id": "unused-javascript",
+            "weight": 0
+          },
+          {
+            "id": "render-blocking-resources",
+            "weight": 0
+          },
+          {
+            "id": "third-party-summary",
+            "weight": 0
+          },
+          {
+            "id": "bootup-time",
+            "weight": 0
+          },
+          {
+            "id": "mainthread-work-breakdown",
+            "weight": 0
+          },
+          {
+            "id": "uses-text-compression",
+            "weight": 0
+          }
+        ]
+      },
+      "accessibility": {
+        "score": 0.88,
+        "auditRefs": []
+      },
+      "seo": {
+        "score": 0.92,
+        "auditRefs": []
+      },
+      "best-practices": {
+        "score": 0.92,
+        "auditRefs": []
+      }
+    },
+    "audits": {
+      "largest-contentful-paint": {
+        "id": "largest-contentful-paint",
+        "title": "Largest Contentful Paint",
+        "description": "LCP marks the time at which the largest text or image is rendered.",
+        "score": 0,
+        "numericValue": 7800,
+        "displayValue": "7.8 s"
+      },
+      "cumulative-layout-shift": {
+        "id": "cumulative-layout-shift",
+        "title": "Cumulative Layout Shift",
+        "description": "CLS measures visual instability.",
+        "score": 0.65,
+        "numericValue": 0.12,
+        "displayValue": "0.12"
+      },
+      "total-blocking-time": {
+        "id": "total-blocking-time",
+        "title": "Total Blocking Time",
+        "description": "TBT.",
+        "score": 0,
+        "numericValue": 2850,
+        "displayValue": "2,850 ms"
+      },
+      "unused-javascript": {
+        "id": "unused-javascript",
+        "title": "Remove unused JavaScript",
+        "description": "Reduce unused JavaScript.",
+        "score": 0,
+        "numericValue": 4100,
+        "displayValue": "4.1 s potential savings",
+        "details": {
+          "type": "table",
+          "items": [
+            {
+              "url": "https://a0.muscache.com/airbnb/static/packages/web/common/frontend/pdp-pages/app-XXXXXX.js",
+              "wastedBytes": 245000,
+              "wastedMs": 1500
+            },
+            {
+              "url": "https://a0.muscache.com/airbnb/static/packages/web/common/frontend/shared/vendor-react-XXXX.js",
+              "wastedBytes": 198000,
+              "wastedMs": 1200
+            },
+            {
+              "url": "https://a0.muscache.com/airbnb/static/packages/web/common/frontend/maps/google-maps-XXXX.js",
+              "wastedBytes": 155000,
+              "wastedMs": 950
+            },
+            {
+              "url": "https://a0.muscache.com/airbnb/static/packages/web/common/frontend/experiments-XXXX.js",
+              "wastedBytes": 112000,
+              "wastedMs": 680
+            },
+            {
+              "url": "https://cdn.segment.com/analytics.js/v1/XXXXX/analytics.min.js",
+              "wastedBytes": 78000,
+              "wastedMs": 480
+            },
+            {
+              "url": "https://a0.muscache.com/airbnb/static/packages/web/common/frontend/polyfills-XXXX.js",
+              "wastedBytes": 42000,
+              "wastedMs": 260
+            }
+          ]
+        }
+      },
+      "render-blocking-resources": {
+        "id": "render-blocking-resources",
+        "title": "Eliminate render-blocking resources",
+        "description": "Resources are blocking the first paint of your page.",
+        "score": 0,
+        "numericValue": 2200,
+        "displayValue": "Potential savings of 2.2 s",
+        "details": {
+          "type": "table",
+          "items": [
+            {
+              "url": "https://a0.muscache.com/airbnb/static/packages/web/common/frontend/critical-XXXX.css",
+              "wastedMs": 1400,
+              "totalBytes": 62000
+            },
+            {
+              "url": "https://fonts.googleapis.com/css2?family=Cereal&display=swap",
+              "wastedMs": 800,
+              "totalBytes": 24000
+            }
+          ]
+        }
+      },
+      "third-party-summary": {
+        "id": "third-party-summary",
+        "title": "Reduce the impact of third-party code",
+        "description": "Third-party code can significantly impact load performance.",
+        "score": 0,
+        "numericValue": null,
+        "displayValue": "18 third-parties, 2.1 s blocking",
+        "details": {
+          "type": "table",
+          "items": [
+            {
+              "url": "Google Analytics / Tag Manager",
+              "blockingTime": 680
+            },
+            {
+              "url": "Segment Analytics",
+              "blockingTime": 480
+            },
+            {
+              "url": "Braze (push notifications)",
+              "blockingTime": 380
+            },
+            {
+              "url": "OneTrust (cookie consent)",
+              "blockingTime": 280
+            },
+            {
+              "url": "Trustpilot widget",
+              "blockingTime": 200
+            },
+            {
+              "url": "Intercom chat",
+              "blockingTime": 140
+            }
+          ]
+        }
+      },
+      "bootup-time": {
+        "id": "bootup-time",
+        "title": "Reduce JavaScript execution time",
+        "description": "Consider reducing the time spent parsing, compiling, and executing JS.",
+        "score": 0,
+        "numericValue": 7200,
+        "displayValue": "7.2 s",
+        "details": {
+          "type": "table",
+          "items": [
+            {
+              "url": "https://a0.muscache.com/airbnb/static/packages/web/common/frontend/pdp-pages/app-XXXXXX.js",
+              "scripting": 2800,
+              "total": 3200
+            },
+            {
+              "url": "https://a0.muscache.com/airbnb/static/packages/web/common/frontend/shared/vendor-react-XXXX.js",
+              "scripting": 1900,
+              "total": 2200
+            },
+            {
+              "url": "https://a0.muscache.com/airbnb/static/packages/web/common/frontend/maps/google-maps-XXXX.js",
+              "scripting": 1100,
+              "total": 1300
+            },
+            {
+              "url": "https://cdn.segment.com/analytics.js/v1/XXXXX/analytics.min.js",
+              "scripting": 650,
+              "total": 780
+            }
+          ]
+        }
+      },
+      "mainthread-work-breakdown": {
+        "id": "mainthread-work-breakdown",
+        "title": "Minimize main-thread work",
+        "description": "Consider reducing the time spent parsing, compiling and executing JS.",
+        "score": 0,
+        "numericValue": 9800,
+        "displayValue": "9.8 s",
+        "details": {
+          "type": "table",
+          "items": [
+            {
+              "groupLabel": "Script Evaluation",
+              "duration": 5200
+            },
+            {
+              "groupLabel": "Style & Layout",
+              "duration": 2100
+            },
+            {
+              "groupLabel": "Rendering",
+              "duration": 1200
+            },
+            {
+              "groupLabel": "Garbage Collection",
+              "duration": 800
+            },
+            {
+              "groupLabel": "Parse HTML & CSS",
+              "duration": 500
+            }
+          ]
+        }
+      },
+      "uses-text-compression": {
+        "id": "uses-text-compression",
+        "title": "Enable text compression",
+        "description": "Text-based resources should be served with compression.",
+        "score": 0.5,
+        "numericValue": null,
+        "displayValue": "85 KiB potential savings",
+        "details": {
+          "type": "table",
+          "items": [
+            {
+              "url": "https://a0.muscache.com/airbnb/static/packages/web/common/frontend/i18n/en-XXXX.json",
+              "wastedBytes": 55000,
+              "totalBytes": 88000
+            },
+            {
+              "url": "https://api.airbnb.com/v2/search_results?key=...",
+              "wastedBytes": 30000,
+              "totalBytes": 48000
+            }
+          ]
+        }
+      }
+    }
+  },
+  "analysisUTCTimestamp": "2026-06-04T13:23:43.755Z"
+}

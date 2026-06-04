@@ -66,19 +66,40 @@ export function rankIssues(summary) {
 /**
  * Augment a LighthouseSummary with metric-level synthetic issues and ranked opportunities.
  * Returns RankedIssue[] covering both metric rules and audit-based issues.
+ * Synthetic metric issues are only included when no audit already covers them.
  *
  * @param {LighthouseSummary} summary
  * @returns {RankedIssue[]}
  */
 export function buildRankedIssueList(summary) {
-  const metricIssues = buildMetricIssues(summary);
-  const auditIssues  = rankIssues(summary);
+  // Score all audit-based opportunities first
+  const auditIssues = rankIssues(summary);
 
-  // De-duplicate: if an audit already covers the metric (e.g. LCP audit), skip metric synthetic
-  const auditIds = new Set(auditIssues.map(i => i.id));
+  // Filter to only meaningfully failing audits (score < 0.9)
+  const significantAuditIssues = auditIssues.filter(i => {
+    const opp = summary.opportunities.find(o => o.id === i.id);
+    return !opp || (opp._score ?? 1) < 0.9;
+  });
 
-  const filtered = metricIssues.filter(mi => !auditIds.has(mi.id));
-  return [...filtered, ...auditIssues].sort((a, b) => b.impactScore - a.impactScore);
+  // Build a set of audit IDs that are already well-covered
+  const coveredPatterns = {
+    lcp: significantAuditIssues.some(i => i.id.includes('largest-contentful-paint') || i.id.includes('lcp')),
+    cls: significantAuditIssues.some(i => i.id.includes('cumulative-layout-shift') || i.id.includes('layout-shift')),
+    inp: significantAuditIssues.some(i => i.id.includes('interaction-to-next-paint') || i.id.includes('inp')),
+    tbt: significantAuditIssues.some(i => i.id.includes('total-blocking-time') || i.id.includes('tbt')),
+  };
+
+  // Metric threshold synthetics — only add when not already covered by an audit
+  const metricIssues = buildMetricIssues(summary).filter(mi => {
+    if (mi.id.includes('lcp')) return !coveredPatterns.lcp;
+    if (mi.id.includes('cls')) return !coveredPatterns.cls;
+    if (mi.id.includes('inp')) return !coveredPatterns.inp;
+    if (mi.id.includes('tbt')) return !coveredPatterns.tbt;
+    return true;
+  });
+
+  return [...metricIssues, ...significantAuditIssues]
+    .sort((a, b) => b.impactScore - a.impactScore);
 }
 
 // ---------------------------------------------------------------------------

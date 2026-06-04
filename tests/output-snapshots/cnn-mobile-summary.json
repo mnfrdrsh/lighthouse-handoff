@@ -1,0 +1,91 @@
+{
+  "url": "https://www.cnn.com/",
+  "strategy": "mobile",
+  "scores": {
+    "performance": 22,
+    "accessibility": 74,
+    "seo": 84,
+    "bestPractices": 75
+  },
+  "metrics": {
+    "lcp": 8400,
+    "cls": 0.38,
+    "inp": 0,
+    "tbt": 4200
+  },
+  "rankedIssues": [
+    {
+      "id": "cumulative-layout-shift",
+      "title": "Cumulative Layout Shift",
+      "priority": "critical",
+      "impactScore": 575
+    },
+    {
+      "id": "largest-contentful-paint",
+      "title": "Largest Contentful Paint",
+      "priority": "critical",
+      "impactScore": 142
+    },
+    {
+      "id": "unused-javascript",
+      "title": "Remove unused JavaScript",
+      "priority": "high",
+      "impactScore": 139
+    },
+    {
+      "id": "render-blocking-resources",
+      "title": "Eliminate render-blocking resources",
+      "priority": "high",
+      "impactScore": 135
+    },
+    {
+      "id": "modern-image-formats",
+      "title": "Serve images in next-gen formats",
+      "priority": "high",
+      "impactScore": 115
+    },
+    {
+      "id": "dom-size",
+      "title": "Avoid an excessive DOM size",
+      "priority": "medium",
+      "impactScore": 110
+    },
+    {
+      "id": "uses-text-compression",
+      "title": "Enable text compression",
+      "priority": "medium",
+      "impactScore": 100
+    },
+    {
+      "id": "uses-optimized-images",
+      "title": "Efficiently encode images",
+      "priority": "high",
+      "impactScore": 97
+    },
+    {
+      "id": "third-party-summary",
+      "title": "Reduce the impact of third-party code",
+      "priority": "medium",
+      "impactScore": 95
+    },
+    {
+      "id": "color-contrast",
+      "title": "Background and foreground colors have sufficient contrast",
+      "priority": "medium",
+      "impactScore": 95
+    }
+  ],
+  "analysisSnapshot": {
+    "executiveSummaryLength": 302,
+    "quickWinCount": 8,
+    "priorityFixCount": 5,
+    "priorityFixTitles": [
+      "Cumulative Layout Shift",
+      "Largest Contentful Paint",
+      "Remove unused JavaScript",
+      "Eliminate render-blocking resources",
+      "Serve images in next-gen formats"
+    ],
+    "acceptanceCriteriaCount": 7
+  }
+}
