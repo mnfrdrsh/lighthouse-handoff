@@ -97,6 +97,7 @@ function extractOpportunities(lhr) {
       _score:        audit.score,
       _numericValue: audit.numericValue,
       _weight:       weights[id],
+      _items:        (audit.details?.items || []).slice(0, 3),
       _hasItems:     Array.isArray(audit.details?.items) && audit.details.items.length > 0,
       _overallSavingsBytes: audit.details?.overallSavingsBytes ?? 0,
       _category:     getPrimaryCategory(id, lhr),

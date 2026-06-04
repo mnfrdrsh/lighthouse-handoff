@@ -61,7 +61,7 @@ ${analysis.acceptanceCriteria.map(c => `- [ ] ${c}`).join('\n')}
  */
 function formatCursorFix(fix, rank) {
   const steps = fix.instructions.map((step, i) => `   ${i + 1}. ${step}`).join('\n');
-  return `### Fix ${rank}: ${fix.title}
+  return `### Fix ${rank}: ${fix.title} (\`${fix.id}\`)
 
 **Reasoning**: ${fix.reasoning}
 

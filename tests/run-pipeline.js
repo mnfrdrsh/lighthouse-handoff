@@ -29,7 +29,7 @@ async function processFixture(label, strategy, psiData) {
 
   const outputs = {};
   for (const mode of OUTPUT_MODES) {
-    outputs[mode] = generateMarkdown(analysis, summary, mode);
+    outputs[mode] = generateMarkdown(analysis, summary, mode, 'mock');
   }
 
   return { summary, ranked, analysis, outputs };
@@ -203,9 +203,9 @@ async function main() {
     const firstLabel = entry.results.find(r => r.success && r.filename)?.strategy;
     if (firstLabel && labelResults[firstLabel]) {
       const { analysis, summary } = labelResults[firstLabel];
-      const mdCursor = generateMarkdown(analysis, summary, 'cursor');
-      const mdGithub = generateMarkdown(analysis, summary, 'github');
-      const mdClient = generateMarkdown(analysis, summary, 'client');
+      const mdCursor = generateMarkdown(analysis, summary, 'cursor', 'mock');
+      const mdGithub = generateMarkdown(analysis, summary, 'github', 'mock');
+      const mdClient = generateMarkdown(analysis, summary, 'client', 'mock');
 
       const allSame = (mdCursor === mdGithub) || (mdGithub === mdClient) || (mdCursor === mdClient);
       if (allSame) {

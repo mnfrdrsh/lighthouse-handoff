@@ -102,6 +102,7 @@ function buildQuickWins(summary, mediumIssues) {
  */
 function buildPriorityFixes(issues) {
   return issues.map(issue => ({
+    id:          issue.id,
     title:       issue.title,
     reasoning:   buildReasoning(issue),
     instructions: buildInstructions(issue),
@@ -168,31 +169,47 @@ function buildReasoning(issue) {
  */
 function buildInstructions(issue) {
   const id = issue.id ?? '';
+  const offenders = extractOffenders(issue.items);
 
   if (id.includes('unused-javascript')) {
-    return [
+    const base = [
       'Open DevTools → Coverage tab and record a page load to identify unused JS bytes',
       'Apply route-based code-splitting via dynamic `import()` to defer non-critical chunks',
       'Remove dead code paths or replace heavy libraries with lighter alternatives',
       'Re-run the audit to confirm reduction in unused bytes',
     ];
+    if (offenders) base.unshift(`Investigate these specific scripts first:\n   ${offenders}`);
+    return base;
+  }
+
+  if (id.includes('third-party-summary')) {
+    const base = [
+      'Identify the third-party scripts causing the most blocking time',
+      'Determine if these scripts can be deferred, loaded asynchronously, or removed',
+      'Consider using a tag manager to control script execution priority',
+    ];
+    if (offenders) base.unshift(`Focus on these highest-impact third parties:\n   ${offenders}`);
+    return base;
   }
 
   if (id.includes('render-blocking')) {
-    return [
+    const base = [
       'Identify render-blocking stylesheets and scripts in the Network waterfall',
       'Inline critical CSS for above-the-fold content and defer the full stylesheet',
       'Add `defer` or `async` to non-critical script tags',
       'Use the `media="print"` + JS `onload` pattern for non-critical CSS',
     ];
+    if (offenders) base.unshift(`Target these specific render-blocking resources:\n   ${offenders}`);
+    return base;
   }
 
   if (/largest-contentful-paint|__lcp/.test(id)) {
     return [
-      'Identify the LCP element using DevTools → Lighthouse or Performance panel',
-      'Add `<link rel="preload" as="image">` for the LCP image in `<head>`',
-      'Ensure the LCP resource is not lazy-loaded',
+      'Inspect above-the-fold content and identify the LCP candidate (hero image, heading, etc.)',
+      'If the LCP element is an image: set explicit width/height, avoid lazy-loading it, consider `fetchpriority="high"`, and use responsive sizes',
+      'If the LCP element is text: ensure web fonts are preloaded or use `font-display: swap`',
       'Reduce TTFB: enable server-side caching or move compute closer to users',
+      'Validate by rerunning Lighthouse and confirming LCP improves',
     ];
   }
 
@@ -201,6 +218,7 @@ function buildInstructions(issue) {
       'Add explicit `width` and `height` attributes to all `<img>` and `<video>` elements',
       'Reserve space for dynamically injected content (ads, embeds) using CSS `aspect-ratio` or min-height',
       'Use `font-display: optional` or preload web fonts to prevent FOIT/FOUT shifts',
+      'Validate by visually inspecting the page load and checking the DevTools CLS metric',
     ];
   }
 
@@ -213,11 +231,22 @@ function buildInstructions(issue) {
   }
 
   if (id.includes('uses-optimized-images') || id.includes('modern-image-formats')) {
-    return [
+    const base = [
       'Convert images to WebP (and AVIF where supported) using `sharp` or an image CDN',
       'Serve responsive images with `srcset` + `sizes` to avoid oversized downloads on smaller screens',
       'Lazy-load all images below the fold with native `loading="lazy"`',
     ];
+    if (offenders) base.unshift(`Optimize these specific images first:\n   ${offenders}`);
+    return base;
+  }
+  
+  if (id.includes('image-alt')) {
+    const base = [
+      'Ensure all informative images have short, descriptive alternate text',
+      'For decorative images, use `alt=""` so screen readers ignore them',
+    ];
+    if (offenders) base.unshift(`Fix these specific elements:\n   ${offenders}`);
+    return base;
   }
 
   if (id.includes('server-response-time')) {
@@ -229,18 +258,46 @@ function buildInstructions(issue) {
   }
 
   if (id.includes('unused-css') || id.includes('unused-stylesheet')) {
-    return [
+    const base = [
       'Use PurgeCSS, UnCSS, or your framework\'s built-in CSS tree-shaking to remove unused rules',
       'Extract critical (above-the-fold) CSS and inline it; defer the rest',
     ];
+    if (offenders) base.unshift(`Review these specific stylesheets:\n   ${offenders}`);
+    return base;
   }
 
   // Generic fallback
   return [
     `Open DevTools and inspect the "${issue.title}" audit for the specific resources or elements flagged`,
     'Implement the smallest targeted change that addresses the root cause',
-    'Re-run Lighthouse Handoff after the fix to verify the score improves',
+    'Validate by rerunning Lighthouse Handoff after the fix to verify the score improves',
   ];
+}
+
+/**
+ * Extracts a formatted list of offenders (URLs or Node labels) from audit items.
+ *
+ * @param {any[]=} items
+ * @returns {string}
+ */
+function extractOffenders(items) {
+  if (!items || !items.length) return '';
+  return items.map(item => {
+    let name = item.url || item.node?.nodeLabel || item.groupLabel || '';
+    if (name) {
+      // Truncate long URLs to just the file name if possible
+      try {
+        if (name.startsWith('http')) {
+          const url = new URL(name);
+          name = url.pathname.split('/').pop() || name;
+        }
+      } catch (e) {
+        // Ignore parsing errors
+      }
+      return '- ' + name;
+    }
+    return '';
+  }).filter(Boolean).join('\n   ');
 }
 
 /**

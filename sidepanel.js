@@ -159,7 +159,7 @@ async function handleGenerate() {
         if (summaries.length > 0) {
           // Run analysis on the primary (first) summary; multi-strategy merged by parseAndRank
           const analysis = await runAnalysis(summaries[0], settings);
-          markdown = generateCombinedMarkdown(analysis, summaries, settings.outputMode);
+          markdown = generateCombinedMarkdown(analysis, summaries, settings.outputMode, settings.provider);
         } else {
           // Fallback to legacy report-builder if normalization yields nothing
           markdown = generateReport(response.results, response.url);

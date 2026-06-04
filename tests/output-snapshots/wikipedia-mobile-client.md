@@ -46,25 +46,30 @@ Each fix will be tested carefully before going live.
 
 **Why it matters**: This is a critical issue that is severely impacting user experience and Google speed metrics. Measured impact: 4.1 s.
 
-**What we will do**: Identify the page load speed element using developer tools → Google's speed test tool or Performance panel
+**What we will do**: Inspect above-the-fold content and identify the page load speed candidate (hero image, heading, etc.)
 
 ### 3. Eliminate render-blocking resources
 
 **Why it matters**: This high-priority issue has a significant impact on performance and should be addressed promptly. Measured impact: Potential savings of 0.82 s.
 
-**What we will do**: Identify render-blocking stylesheets and scripts in the Network waterfall
+**What we will do**: Target these specific render-blocking resources:
+   - load.php
+   - load.php
 
 ### 4. Remove unused website code
 
 **Why it matters**: This high-priority issue has a significant impact on performance and should be addressed promptly. Measured impact: 0.48 s potential savings.
 
-**What we will do**: Open developer tools → Coverage tab and record a page load to identify unused website code bytes
+**What we will do**: Investigate these specific scripts first:
+   - load.php
+   - load.php
 
 ### 5. Efficiently encode images
 
 **Why it matters**: This high-priority issue has a significant impact on performance and should be addressed promptly. Measured impact: 42 KiB potential savings.
 
-**What we will do**: Convert images to WebP (and AVIF where supported) using "sharp" or an image content delivery network
+**What we will do**: Optimize these specific images first:
+   - 800px.png
 
 ---
 

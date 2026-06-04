@@ -56,7 +56,7 @@ ${analysis.acceptanceCriteria.map(c => `- [ ] ${c}`).join('\n')}
  */
 function formatGitHubFix(fix, rank) {
   const steps = fix.instructions.map(step => `  - [ ] ${step}`).join('\n');
-  return `#### ${rank}. ${fix.title}
+  return `#### ${rank}. ${fix.title} (\`${fix.id}\`)
 
 ${fix.reasoning}
 

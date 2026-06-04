@@ -22,25 +22,28 @@ For each fix:
 
 ## Priority Fixes
 
-### Fix 1: Largest Contentful Paint
+### Fix 1: Largest Contentful Paint (`largest-contentful-paint`)
 
 **Reasoning**: This is a critical issue that is severely impacting user experience and Core Web Vitals. Measured impact: 2.8 s.
 
 **Implementation steps**:
-   1. Identify the LCP element using DevTools → Lighthouse or Performance panel
-   2. Add `<link rel="preload" as="image">` for the LCP image in `<head>`
-   3. Ensure the LCP resource is not lazy-loaded
+   1. Inspect above-the-fold content and identify the LCP candidate (hero image, heading, etc.)
+   2. If the LCP element is an image: set explicit width/height, avoid lazy-loading it, consider `fetchpriority="high"`, and use responsive sizes
+   3. If the LCP element is text: ensure web fonts are preloaded or use `font-display: swap`
    4. Reduce TTFB: enable server-side caching or move compute closer to users
+   5. Validate by rerunning Lighthouse and confirming LCP improves
 
-### Fix 2: Remove unused JavaScript
+### Fix 2: Remove unused JavaScript (`unused-javascript`)
 
 **Reasoning**: This high-priority issue has a significant impact on performance and should be addressed promptly. Measured impact: 0.38 s potential savings.
 
 **Implementation steps**:
-   1. Open DevTools → Coverage tab and record a page load to identify unused JS bytes
-   2. Apply route-based code-splitting via dynamic `import()` to defer non-critical chunks
-   3. Remove dead code paths or replace heavy libraries with lighter alternatives
-   4. Re-run the audit to confirm reduction in unused bytes
+   1. Investigate these specific scripts first:
+   - govuk-frontend-5.js
+   2. Open DevTools → Coverage tab and record a page load to identify unused JS bytes
+   3. Apply route-based code-splitting via dynamic `import()` to defer non-critical chunks
+   4. Remove dead code paths or replace heavy libraries with lighter alternatives
+   5. Re-run the audit to confirm reduction in unused bytes
 
 ## Quick Wins (after priority fixes)
 

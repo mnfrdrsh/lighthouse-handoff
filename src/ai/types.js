@@ -11,7 +11,7 @@
  */
 
 /**
- * @typedef {'mock' | 'openai' | 'claude' | 'ollama' | 'liquid'} ProviderName
+ * @typedef {'mock' | 'openai' | 'claude' | 'ollama' | 'liquid' | 'liquid-local'} ProviderName
  */
 
 /**
@@ -27,6 +27,7 @@
  * @property {Priority} priority
  * @property {string} [displayValue]
  * @property {string[]} [affectedStrategies]
+ * @property {any[]} [items]
  */
 
 /**
@@ -47,10 +48,12 @@
  * @property {string} [displayValue]
  * @property {string} [description]
  * @property {string[]} [affectedStrategies]
+ * @property {any[]} [items]
  */
 
 /**
  * @typedef {Object} PriorityFix
+ * @property {string} id
  * @property {string} title
  * @property {string} reasoning
  * @property {string[]} instructions
@@ -75,5 +78,5 @@ export const DEFAULT_SETTINGS = /** @type {AISettings} */ ({
   outputMode: 'cursor',
 });
 
-export const PROVIDERS = /** @type {ProviderName[]} */ (['mock', 'openai', 'claude', 'ollama', 'liquid']);
+export const PROVIDERS = /** @type {ProviderName[]} */ (['mock', 'openai', 'claude', 'ollama', 'liquid', 'liquid-local']);
 export const OUTPUT_MODES = /** @type {OutputMode[]} */ (['cursor', 'claude-code', 'github', 'client']);

@@ -15,21 +15,24 @@ There is meaningful room for improvement. Focus on the priority fixes below to m
 
 ### Priority Fixes
 
-#### 1. Largest Contentful Paint
+#### 1. Largest Contentful Paint (`largest-contentful-paint`)
 
 This is a critical issue that is severely impacting user experience and Core Web Vitals. Measured impact: 2.8 s.
 
 **Steps:**
-  - [ ] Identify the LCP element using DevTools → Lighthouse or Performance panel
-  - [ ] Add `<link rel="preload" as="image">` for the LCP image in `<head>`
-  - [ ] Ensure the LCP resource is not lazy-loaded
+  - [ ] Inspect above-the-fold content and identify the LCP candidate (hero image, heading, etc.)
+  - [ ] If the LCP element is an image: set explicit width/height, avoid lazy-loading it, consider `fetchpriority="high"`, and use responsive sizes
+  - [ ] If the LCP element is text: ensure web fonts are preloaded or use `font-display: swap`
   - [ ] Reduce TTFB: enable server-side caching or move compute closer to users
+  - [ ] Validate by rerunning Lighthouse and confirming LCP improves
 
-#### 2. Remove unused JavaScript
+#### 2. Remove unused JavaScript (`unused-javascript`)
 
 This high-priority issue has a significant impact on performance and should be addressed promptly. Measured impact: 0.38 s potential savings.
 
 **Steps:**
+  - [ ] Investigate these specific scripts first:
+   - govuk-frontend-5.js
   - [ ] Open DevTools → Coverage tab and record a page load to identify unused JS bytes
   - [ ] Apply route-based code-splitting via dynamic `import()` to defer non-critical chunks
   - [ ] Remove dead code paths or replace heavy libraries with lighter alternatives

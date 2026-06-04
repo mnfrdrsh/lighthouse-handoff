@@ -15,7 +15,7 @@ There is meaningful room for improvement. Focus on the priority fixes below to m
 
 ### Priority Fixes
 
-#### 1. Cumulative Layout Shift
+#### 1. Cumulative Layout Shift (`cumulative-layout-shift`)
 
 This is a critical issue that is severely impacting user experience and Core Web Vitals. Measured impact: 0.07.
 
@@ -23,42 +23,52 @@ This is a critical issue that is severely impacting user experience and Core Web
   - [ ] Add explicit `width` and `height` attributes to all `<img>` and `<video>` elements
   - [ ] Reserve space for dynamically injected content (ads, embeds) using CSS `aspect-ratio` or min-height
   - [ ] Use `font-display: optional` or preload web fonts to prevent FOIT/FOUT shifts
+  - [ ] Validate by visually inspecting the page load and checking the DevTools CLS metric
 
-#### 2. Largest Contentful Paint
+#### 2. Largest Contentful Paint (`largest-contentful-paint`)
 
 This is a critical issue that is severely impacting user experience and Core Web Vitals. Measured impact: 4.1 s.
 
 **Steps:**
-  - [ ] Identify the LCP element using DevTools → Lighthouse or Performance panel
-  - [ ] Add `<link rel="preload" as="image">` for the LCP image in `<head>`
-  - [ ] Ensure the LCP resource is not lazy-loaded
+  - [ ] Inspect above-the-fold content and identify the LCP candidate (hero image, heading, etc.)
+  - [ ] If the LCP element is an image: set explicit width/height, avoid lazy-loading it, consider `fetchpriority="high"`, and use responsive sizes
+  - [ ] If the LCP element is text: ensure web fonts are preloaded or use `font-display: swap`
   - [ ] Reduce TTFB: enable server-side caching or move compute closer to users
+  - [ ] Validate by rerunning Lighthouse and confirming LCP improves
 
-#### 3. Eliminate render-blocking resources
+#### 3. Eliminate render-blocking resources (`render-blocking-resources`)
 
 This high-priority issue has a significant impact on performance and should be addressed promptly. Measured impact: Potential savings of 0.82 s.
 
 **Steps:**
+  - [ ] Target these specific render-blocking resources:
+   - load.php
+   - load.php
   - [ ] Identify render-blocking stylesheets and scripts in the Network waterfall
   - [ ] Inline critical CSS for above-the-fold content and defer the full stylesheet
   - [ ] Add `defer` or `async` to non-critical script tags
   - [ ] Use the `media="print"` + JS `onload` pattern for non-critical CSS
 
-#### 4. Remove unused JavaScript
+#### 4. Remove unused JavaScript (`unused-javascript`)
 
 This high-priority issue has a significant impact on performance and should be addressed promptly. Measured impact: 0.48 s potential savings.
 
 **Steps:**
+  - [ ] Investigate these specific scripts first:
+   - load.php
+   - load.php
   - [ ] Open DevTools → Coverage tab and record a page load to identify unused JS bytes
   - [ ] Apply route-based code-splitting via dynamic `import()` to defer non-critical chunks
   - [ ] Remove dead code paths or replace heavy libraries with lighter alternatives
   - [ ] Re-run the audit to confirm reduction in unused bytes
 
-#### 5. Efficiently encode images
+#### 5. Efficiently encode images (`uses-optimized-images`)
 
 This high-priority issue has a significant impact on performance and should be addressed promptly. Measured impact: 42 KiB potential savings.
 
 **Steps:**
+  - [ ] Optimize these specific images first:
+   - 800px.png
   - [ ] Convert images to WebP (and AVIF where supported) using `sharp` or an image CDN
   - [ ] Serve responsive images with `srcset` + `sizes` to avoid oversized downloads on smaller screens
   - [ ] Lazy-load all images below the fold with native `loading="lazy"`

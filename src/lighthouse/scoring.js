@@ -162,6 +162,7 @@ function rankOpportunity(opp, summary) {
     displayValue:       opp.displayValue,
     description:        opp.description,
     affectedStrategies: opp.affectedStrategies,
+    items:              opp._items,
   };
 }
 

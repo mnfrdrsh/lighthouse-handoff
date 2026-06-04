@@ -115,6 +115,7 @@ const PROVIDER_HINTS = {
   openai: 'OpenAI sends your normalized report data to the OpenAI API. Requires an OpenAI API key.',
   claude: 'Claude sends your normalized report data to the Anthropic API. Requires an Anthropic API key.',
   liquid: 'Liquid AI runs the LEAP SDK locally. Phase 2 implementation.',
+  'liquid-local': 'Connects to a local Liquid LEAP companion app over http://localhost.',
 };
 
 async function loadSavedAISettings() {
@@ -144,6 +145,26 @@ async function saveAISettingsHandler() {
 
 function updateProviderHint(provider) {
   elements.providerHint.textContent = PROVIDER_HINTS[provider] ?? '';
+  
+  if (provider === 'liquid-local') {
+    checkLiquidHealth();
+  }
+}
+
+async function checkLiquidHealth() {
+  showAiStatus('Checking Liquid companion status...', 'info');
+  try {
+    const { LiquidLocalProvider } = await import('./src/ai/providers/liquid-local.js');
+    const p = new LiquidLocalProvider();
+    const health = await p.checkHealth();
+    if (health.ready) {
+      showAiStatus(`Liquid Companion: Connected (Model: ${health.model})`, 'success');
+    } else {
+      showAiStatus('Liquid Companion: Not running', 'error');
+    }
+  } catch (err) {
+    showAiStatus('Liquid Companion: Not running', 'error');
+  }
 }
 
 function showAiStatus(message, type) {

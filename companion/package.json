@@ -1,0 +1,12 @@
+{
+  "name": "lighthouse-handoff-companion",
+  "version": "0.1.0",
+  "description": "Mock local companion server for Lighthouse Handoff Liquid Local provider",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

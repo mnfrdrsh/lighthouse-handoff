@@ -5,6 +5,7 @@
 import { MockProvider }   from './providers/mock.js';
 import { OllamaProvider } from './providers/ollama.js';
 import { OpenAIProvider } from './providers/openai.js';
+import { LiquidLocalProvider } from './providers/liquid-local.js';
 import { DEFAULT_SETTINGS } from './types.js';
 
 /** @typedef {import('./types.js').AIProvider} AIProvider */
@@ -31,6 +32,7 @@ export function createProvider(name, providerOptions = {}) {
     case 'mock':   return new MockProvider();
     case 'ollama': return new OllamaProvider(providerOptions);
     case 'openai': return new OpenAIProvider(providerOptions);
+    case 'liquid-local': return new LiquidLocalProvider(providerOptions);
     case 'claude':
     case 'liquid':
       // Stubs — Phase 2 implementations go here

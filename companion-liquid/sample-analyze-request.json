@@ -1,0 +1,30 @@
+{
+  "report": {
+    "url": "https://example.com",
+    "strategy": "mobile",
+    "scores": {
+      "performance": 45,
+      "accessibility": 80,
+      "seo": 90,
+      "bestPractices": 100
+    },
+    "metrics": {
+      "lcp": 4500,
+      "cls": 0.2,
+      "inp": 300,
+      "tbt": 500
+    },
+    "opportunities": []
+  },
+  "rankedIssues": [
+    {
+      "id": "lcp-issue",
+      "title": "Largest Contentful Paint is too high",
+      "priority": "critical",
+      "impactScore": 100,
+      "description": "LCP marks the time at which the largest text or image is painted. Reduce server response times and optimize images."
+    }
+  ],
+  "outputMode": "cursor",
+  "schemaVersion": "1.0"
+}

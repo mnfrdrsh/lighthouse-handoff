@@ -22,7 +22,7 @@ For each fix:
 
 ## Priority Fixes
 
-### Fix 1: Cumulative Layout Shift
+### Fix 1: Cumulative Layout Shift (`cumulative-layout-shift`)
 
 **Reasoning**: This is a critical issue that is severely impacting user experience and Core Web Vitals. Measured impact: 0.32.
 
@@ -30,44 +30,57 @@ For each fix:
    1. Add explicit `width` and `height` attributes to all `<img>` and `<video>` elements
    2. Reserve space for dynamically injected content (ads, embeds) using CSS `aspect-ratio` or min-height
    3. Use `font-display: optional` or preload web fonts to prevent FOIT/FOUT shifts
+   4. Validate by visually inspecting the page load and checking the DevTools CLS metric
 
-### Fix 2: Largest Contentful Paint
+### Fix 2: Largest Contentful Paint (`largest-contentful-paint`)
 
 **Reasoning**: This is a critical issue that is severely impacting user experience and Core Web Vitals. Measured impact: 12.6 s.
 
 **Implementation steps**:
-   1. Identify the LCP element using DevTools → Lighthouse or Performance panel
-   2. Add `<link rel="preload" as="image">` for the LCP image in `<head>`
-   3. Ensure the LCP resource is not lazy-loaded
+   1. Inspect above-the-fold content and identify the LCP candidate (hero image, heading, etc.)
+   2. If the LCP element is an image: set explicit width/height, avoid lazy-loading it, consider `fetchpriority="high"`, and use responsive sizes
+   3. If the LCP element is text: ensure web fonts are preloaded or use `font-display: swap`
    4. Reduce TTFB: enable server-side caching or move compute closer to users
+   5. Validate by rerunning Lighthouse and confirming LCP improves
 
-### Fix 3: Efficiently encode images
+### Fix 3: Efficiently encode images (`uses-optimized-images`)
 
 **Reasoning**: This high-priority issue has a significant impact on performance and should be addressed promptly. Measured impact: 2.4 MiB potential savings.
 
 **Implementation steps**:
-   1. Convert images to WebP (and AVIF where supported) using `sharp` or an image CDN
-   2. Serve responsive images with `srcset` + `sizes` to avoid oversized downloads on smaller screens
-   3. Lazy-load all images below the fold with native `loading="lazy"`
+   1. Optimize these specific images first:
+   - hero-gallery-main-2024.jpg
+   - wildlife-photo-of-year.jpg
+   - nature-explorer-banner.jpg
+   2. Convert images to WebP (and AVIF where supported) using `sharp` or an image CDN
+   3. Serve responsive images with `srcset` + `sizes` to avoid oversized downloads on smaller screens
+   4. Lazy-load all images below the fold with native `loading="lazy"`
 
-### Fix 4: Serve images in next-gen formats
+### Fix 4: Serve images in next-gen formats (`modern-image-formats`)
 
 **Reasoning**: This high-priority issue has a significant impact on performance and should be addressed promptly. Measured impact: 2.1 MiB potential savings.
 
 **Implementation steps**:
-   1. Convert images to WebP (and AVIF where supported) using `sharp` or an image CDN
-   2. Serve responsive images with `srcset` + `sizes` to avoid oversized downloads on smaller screens
-   3. Lazy-load all images below the fold with native `loading="lazy"`
+   1. Optimize these specific images first:
+   - hero-gallery-main-2024.jpg
+   - wildlife-photo-of-year.jpg
+   - nature-explorer-banner.jpg
+   2. Convert images to WebP (and AVIF where supported) using `sharp` or an image CDN
+   3. Serve responsive images with `srcset` + `sizes` to avoid oversized downloads on smaller screens
+   4. Lazy-load all images below the fold with native `loading="lazy"`
 
-### Fix 5: Eliminate render-blocking resources
+### Fix 5: Eliminate render-blocking resources (`render-blocking-resources`)
 
 **Reasoning**: This high-priority issue has a significant impact on performance and should be addressed promptly. Measured impact: Potential savings of 1.2 s.
 
 **Implementation steps**:
-   1. Identify render-blocking stylesheets and scripts in the Network waterfall
-   2. Inline critical CSS for above-the-fold content and defer the full stylesheet
-   3. Add `defer` or `async` to non-critical script tags
-   4. Use the `media="print"` + JS `onload` pattern for non-critical CSS
+   1. Target these specific render-blocking resources:
+   - application.css
+   - fonts.css
+   2. Identify render-blocking stylesheets and scripts in the Network waterfall
+   3. Inline critical CSS for above-the-fold content and defer the full stylesheet
+   4. Add `defer` or `async` to non-critical script tags
+   5. Use the `media="print"` + JS `onload` pattern for non-critical CSS
 
 ## Quick Wins (after priority fixes)
 

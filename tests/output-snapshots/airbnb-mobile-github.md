@@ -15,7 +15,7 @@ Performance is critically low. Significant gains are achievable through JavaScri
 
 ### Priority Fixes
 
-#### 1. Cumulative Layout Shift
+#### 1. Cumulative Layout Shift (`cumulative-layout-shift`)
 
 This is a critical issue that is severely impacting user experience and Core Web Vitals. Measured impact: 0.12.
 
@@ -23,32 +23,41 @@ This is a critical issue that is severely impacting user experience and Core Web
   - [ ] Add explicit `width` and `height` attributes to all `<img>` and `<video>` elements
   - [ ] Reserve space for dynamically injected content (ads, embeds) using CSS `aspect-ratio` or min-height
   - [ ] Use `font-display: optional` or preload web fonts to prevent FOIT/FOUT shifts
+  - [ ] Validate by visually inspecting the page load and checking the DevTools CLS metric
 
-#### 2. Largest Contentful Paint
+#### 2. Largest Contentful Paint (`largest-contentful-paint`)
 
 This is a critical issue that is severely impacting user experience and Core Web Vitals. Measured impact: 7.8 s.
 
 **Steps:**
-  - [ ] Identify the LCP element using DevTools → Lighthouse or Performance panel
-  - [ ] Add `<link rel="preload" as="image">` for the LCP image in `<head>`
-  - [ ] Ensure the LCP resource is not lazy-loaded
+  - [ ] Inspect above-the-fold content and identify the LCP candidate (hero image, heading, etc.)
+  - [ ] If the LCP element is an image: set explicit width/height, avoid lazy-loading it, consider `fetchpriority="high"`, and use responsive sizes
+  - [ ] If the LCP element is text: ensure web fonts are preloaded or use `font-display: swap`
   - [ ] Reduce TTFB: enable server-side caching or move compute closer to users
+  - [ ] Validate by rerunning Lighthouse and confirming LCP improves
 
-#### 3. Remove unused JavaScript
+#### 3. Remove unused JavaScript (`unused-javascript`)
 
 This high-priority issue has a significant impact on performance and should be addressed promptly. Measured impact: 4.1 s potential savings.
 
 **Steps:**
+  - [ ] Investigate these specific scripts first:
+   - app-XXXXXX.js
+   - vendor-react-XXXX.js
+   - google-maps-XXXX.js
   - [ ] Open DevTools → Coverage tab and record a page load to identify unused JS bytes
   - [ ] Apply route-based code-splitting via dynamic `import()` to defer non-critical chunks
   - [ ] Remove dead code paths or replace heavy libraries with lighter alternatives
   - [ ] Re-run the audit to confirm reduction in unused bytes
 
-#### 4. Eliminate render-blocking resources
+#### 4. Eliminate render-blocking resources (`render-blocking-resources`)
 
 This high-priority issue has a significant impact on performance and should be addressed promptly. Measured impact: Potential savings of 2.2 s.
 
 **Steps:**
+  - [ ] Target these specific render-blocking resources:
+   - critical-XXXX.css
+   - css2
   - [ ] Identify render-blocking stylesheets and scripts in the Network waterfall
   - [ ] Inline critical CSS for above-the-fold content and defer the full stylesheet
   - [ ] Add `defer` or `async` to non-critical script tags

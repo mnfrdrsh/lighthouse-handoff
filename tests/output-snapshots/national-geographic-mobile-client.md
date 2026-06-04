@@ -46,25 +46,33 @@ Each fix will be tested carefully before going live.
 
 **Why it matters**: This is a critical issue that is severely impacting user experience and Google speed metrics. Measured impact: 12.6 s.
 
-**What we will do**: Identify the page load speed element using developer tools → Google's speed test tool or Performance panel
+**What we will do**: Inspect above-the-fold content and identify the page load speed candidate (hero image, heading, etc.)
 
 ### 3. Efficiently encode images
 
 **Why it matters**: This high-priority issue has a significant impact on performance and should be addressed promptly. Measured impact: 2.4 MiB potential savings.
 
-**What we will do**: Convert images to WebP (and AVIF where supported) using "sharp" or an image content delivery network
+**What we will do**: Optimize these specific images first:
+   - hero-gallery-main-2024.jpg
+   - wildlife-photo-of-year.jpg
+   - nature-explorer-banner.jpg
 
 ### 4. Serve images in next-gen formats
 
 **Why it matters**: This high-priority issue has a significant impact on performance and should be addressed promptly. Measured impact: 2.1 MiB potential savings.
 
-**What we will do**: Convert images to WebP (and AVIF where supported) using "sharp" or an image content delivery network
+**What we will do**: Optimize these specific images first:
+   - hero-gallery-main-2024.jpg
+   - wildlife-photo-of-year.jpg
+   - nature-explorer-banner.jpg
 
 ### 5. Eliminate render-blocking resources
 
 **Why it matters**: This high-priority issue has a significant impact on performance and should be addressed promptly. Measured impact: Potential savings of 1.2 s.
 
-**What we will do**: Identify render-blocking stylesheets and scripts in the Network waterfall
+**What we will do**: Target these specific render-blocking resources:
+   - application.css
+   - fonts.css
 
 ---
 

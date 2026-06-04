@@ -40,13 +40,14 @@ Each fix will be tested carefully before going live.
 
 **Why it matters**: This is a critical issue that is severely impacting user experience and Google speed metrics. Measured impact: 2.8 s.
 
-**What we will do**: Identify the page load speed element using developer tools → Google's speed test tool or Performance panel
+**What we will do**: Inspect above-the-fold content and identify the page load speed candidate (hero image, heading, etc.)
 
 ### 2. Remove unused website code
 
 **Why it matters**: This high-priority issue has a significant impact on performance and should be addressed promptly. Measured impact: 0.38 s potential savings.
 
-**What we will do**: Open developer tools → Coverage tab and record a page load to identify unused website code bytes
+**What we will do**: Investigate these specific scripts first:
+   - govuk-frontend-5.js
 
 ---
 
