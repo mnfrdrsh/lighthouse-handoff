@@ -110,6 +110,13 @@ html, body {
   transition: all 0.15s;
 }
 .rpt-icon-btn:hover { border-color: var(--border-h); color: var(--text); }
+.rpt-icon-btn.with-text {
+  width: auto;
+  padding: 0 12px;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
 
 /* ── Loading ──────────────────────────────── */
 .rpt-loading {
@@ -181,6 +188,13 @@ html, body {
   border-bottom: 1px solid var(--border);
   background: var(--surface);
   font-size: 12px;
+}
+
+.rpt-preview-note {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 12px 24px 0;
+  margin-bottom: -10px;
 }
 
 .rpt-meta-key  { color: var(--accent); font-weight: 600; }

@@ -55,7 +55,7 @@ export function createProvider(name, providerOptions = {}) {
  */
 export async function runAnalysis(summary, settingsOverride) {
   const settings = settingsOverride ?? await loadAISettings();
-  const provider = createProvider(settings.provider);
+  const provider = createProvider(settings.provider, settings);
   return provider.analyze(summary);
 }
 

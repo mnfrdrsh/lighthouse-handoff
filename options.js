@@ -46,7 +46,7 @@ async function loadSavedKey() {
       setTimeout(() => clearStatus(), 1600);
     }
   } catch (error) {
-    console.error({ error }, 'Failed to load API key');
+    console.error('Failed to load API key:', error);
     showStatus('Could not load saved key', 'error');
   }
 }
@@ -74,7 +74,7 @@ async function saveKey() {
     showStatus('API key saved successfully ✓ (side panel updates automatically)', 'success');
     setTimeout(() => { window.close(); }, 800);
   } catch (error) {
-    console.error({ error }, 'Failed to save API key');
+    console.error('Failed to save API key:', error);
     showStatus('Failed to save key. Please try again.', 'error');
   }
 }
@@ -91,7 +91,7 @@ async function clearKey() {
     elements.apiKeyInput.value = '';
     showStatus('API key cleared', 'success');
   } catch (error) {
-    console.error({ error }, 'Failed to clear API key');
+    console.error('Failed to clear API key:', error);
     showStatus('Failed to clear key', 'error');
   }
 }
@@ -125,7 +125,7 @@ async function loadSavedAISettings() {
     elements.outputModeSelect.value  = settings.outputMode;
     updateProviderHint(settings.provider);
   } catch (error) {
-    console.error({ error }, 'Failed to load AI settings');
+    console.error('Failed to load AI settings:', error);
   }
 }
 
@@ -138,7 +138,7 @@ async function saveAISettingsHandler() {
     showAiStatus('AI settings saved ✓', 'success');
     setTimeout(() => clearAiStatus(), 2000);
   } catch (error) {
-    console.error({ error }, 'Failed to save AI settings');
+    console.error('Failed to save AI settings:', error);
     showAiStatus('Failed to save AI settings', 'error');
   }
 }

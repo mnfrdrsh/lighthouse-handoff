@@ -252,6 +252,7 @@ describe('MockProvider', () => {
 
     assert.ok(Array.isArray(analysis.acceptanceCriteria));
     assert.ok(analysis.acceptanceCriteria.length > 0);
+    assert.equal(analysis.modelId, 'mock');
   });
 
   test('executiveSummary reflects actual scores', async () => {

@@ -30,7 +30,7 @@ export function generateReport(results, url, options = {}) {
 
   const sections = [];
 
-  sections.push(generateHeader(url, timestamp, validResults));
+  sections.push(generateHeader(url, timestamp, validResults, options));
   sections.push(generateExecutiveSummary(mobileData, desktopData));
   sections.push(generateCoreWebVitals(mobileData, desktopData));
 
@@ -57,15 +57,41 @@ export function generateReport(results, url, options = {}) {
 /*                              HEADER & SUMMARY                              */
 /* ========================================================================== */
 
-function generateHeader(url, timestamp, results) {
+function generateHeader(url, timestamp, results, options = {}) {
   const strategies = results.map(r => r.strategy).join(' + ');
 
-  return `# PageSpeed Optimization Report
+  let header = `# PageSpeed Optimization Report
 
 **URL**: ${url}  
 **Generated**: ${timestamp}  
 **Strategies**: ${strategies}  
 **Tool**: Lighthouse Handoff (PageSpeed Insights → Agent Brief)`;
+
+  if (options.settings && options.settings.provider) {
+    const s = options.settings;
+    const providerNames = {
+      'mock': 'Mock Provider',
+      'liquid-local': 'Liquid Local Companion',
+      'ollama': 'Ollama Local',
+      'openai': 'OpenAI',
+      'claude': 'Claude'
+    };
+    
+    const modelNames = {
+      'mock': 'Mock Model',
+      'LFM2.5-350M': 'LFM 2.5 350M',
+      'LFM-1.3B': 'LFM 1.3B',
+      'LFM-3B': 'LFM 3B'
+    };
+
+    const pName = providerNames[s.provider] || s.provider;
+    const mName = modelNames[s.model] || s.model || 'Unknown';
+    const mode = s.provider.includes('local') || s.provider === 'ollama' || s.provider === 'mock' ? 'Local' : 'Cloud';
+
+    header += `\n**AI Provider**: ${pName}  \n**Model**: ${mName}  \n**Mode**: ${mode}`;
+  }
+
+  return header;
 }
 
 function generateExecutiveSummary(mobile, desktop) {

@@ -18,16 +18,18 @@
       </div>
 
       <nav class="rpt-tabs">
-        <button id="tab-markdown" class="rtab active">Markdown Report</button>
+        <button id="tab-markdown" class="rtab active">Agent Brief Preview</button>
         <button id="tab-json"     class="rtab">Raw PSI JSON</button>
       </nav>
 
       <div class="rpt-header-actions">
-        <button id="btn-copy-md" class="rpt-icon-btn" title="Copy Markdown">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <button id="btn-copy-md" class="rpt-icon-btn with-text" title="Copy Full Agent Brief">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span>Copy Full Agent Brief</span>
         </button>
-        <button id="btn-download-md" class="rpt-icon-btn" title="Download .md">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <button id="btn-download-md" class="rpt-icon-btn with-text" title="Download Full Agent Brief">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Download Full Agent Brief</span>
         </button>
       </div>
     </header>
@@ -56,7 +58,11 @@
         <span class="rpt-meta-item"><span class="rpt-meta-key">Audited:</span> <span id="meta-date">—</span></span>
         <span class="rpt-meta-sep">·</span>
         <span class="rpt-meta-item"><span class="rpt-meta-key">Strategies:</span> <span id="meta-strategies" class="rpt-strat-badge">—</span></span>
+        <span class="rpt-meta-sep">·</span>
+        <span class="rpt-meta-item"><span class="rpt-meta-key">AI:</span> <span id="meta-ai">—</span></span>
       </div>
+
+      <p class="rpt-preview-note">This is a quick preview of the highest-impact issues. Use <strong>Copy</strong> or <strong>Download</strong> to hand the full implementation brief to your coding agent.</p>
 
       <!-- Document body -->
       <div class="rpt-doc" id="rpt-doc-body">
@@ -71,12 +77,22 @@
           <ul id="doc-issues" class="doc-list"></ul>
         </div>
 
-        <!-- Concrete Fixes -->
+        <!-- Top Agent Actions -->
+        <div class="doc-section">
+          <div class="doc-heading">
+            <span class="doc-emoji">🚀</span>
+            <span class="doc-hash">##</span>
+            <span class="doc-section-title">Top Agent Actions</span>
+          </div>
+          <ul id="doc-top-actions" class="doc-list"></ul>
+        </div>
+
+        <!-- Additional Fix Areas -->
         <div class="doc-section">
           <div class="doc-heading">
             <span class="doc-emoji">🔧</span>
             <span class="doc-hash">##</span>
-            <span class="doc-section-title">Concrete Fixes</span>
+            <span class="doc-section-title">Additional Fix Areas</span>
           </div>
           <ul id="doc-fixes" class="doc-list"></ul>
         </div>

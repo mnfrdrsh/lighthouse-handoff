@@ -16,7 +16,8 @@ data class AnalyzeRequest(
     val report: JsonElement,
     val rankedIssues: List<JsonElement>,
     val outputMode: String,
-    val schemaVersion: String
+    val schemaVersion: String,
+    val modelId: String? = null
 )
 
 @Serializable
@@ -33,7 +34,8 @@ data class AIAnalysis(
     val quickWins: List<String>,
     val priorityFixes: List<PriorityFix>,
     val acceptanceCriteria: List<String>,
-    val limitations: List<String>? = null
+    val limitations: List<String>? = null,
+    val modelId: String? = null
 )
 
 @Serializable

@@ -22,6 +22,23 @@ PORT=31313
 
 ## Setup & Running
 
+**Required Java version**: JDK 21 LTS
+* Java 25 is not recommended for this project right now
+* Java 8 is too old
+* Confirm Java with:
+
+```powershell
+java -version
+echo $env:JAVA_HOME
+```
+
+Expected:
+
+```txt
+java version "21..."
+JAVA_HOME points to JDK 21
+```
+
 **Prerequisite:** If you do not have Gradle installed globally, you must install it to generate the wrapper (`gradle wrapper`) or run the project for the first time.
 
 Run using Gradle:

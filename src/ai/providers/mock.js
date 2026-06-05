@@ -30,6 +30,7 @@ export class MockProvider {
       quickWins:        buildQuickWins(summary, medium),
       priorityFixes:    buildPriorityFixes(criticalAndHigh.slice(0, 5)),
       acceptanceCriteria: buildAcceptanceCriteria(summary),
+      modelId:          'mock',
     };
   }
 }

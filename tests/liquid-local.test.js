@@ -77,8 +77,28 @@ test('LiquidLocalProvider', async (t) => {
     );
   });
 
-  await t.test('engine can select liquid-local', () => {
-    const provider = createProvider('liquid-local');
+  await t.test('engine can select liquid-local and passes model settings', async () => {
+    let capturedBody;
+    global.fetch = async (url, options) => {
+      capturedBody = JSON.parse(options.body);
+      return {
+        ok: true,
+        json: async () => ({
+          executiveSummary: 'Test summary',
+          quickWins: ['Win 1'],
+          priorityFixes: [],
+          acceptanceCriteria: ['Crit 1'],
+          modelId: 'LFM-1.3B'
+        })
+      };
+    };
+
+    const provider = createProvider('liquid-local', { model: 'LFM-1.3B' });
     assert.ok(provider instanceof LiquidLocalProvider);
+    assert.equal(provider.model, 'LFM-1.3B');
+
+    const result = await provider.analyze(mockSummary);
+    assert.equal(capturedBody.modelId, 'LFM-1.3B');
+    assert.equal(result.modelId, 'LFM-1.3B');
   });
 });

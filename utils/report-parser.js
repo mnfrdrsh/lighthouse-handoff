@@ -12,10 +12,15 @@ export function parseMarkdownReport(markdown) {
   const urlMatch = markdown.match(/\*\*URL\*\*:\s*([^\n\r]+)/i);
   const dateMatch = markdown.match(/\*\*Generated\*\*:\s*([^\n\r]+)/i);
   const strategiesMatch = markdown.match(/\*\*Strategies\*\*:\s*([^\n\r]+)/i);
+  const providerMatch = markdown.match(/\*\*AI Provider\*\*:\s*([^\n\r]+)/i);
+  const modelMatch = markdown.match(/\*\*Model\*\*:\s*([^\n\r]+)/i);
 
   const url = urlMatch ? urlMatch[1].replace(/&nbsp;/g, ' ').replace(/\s+$/, '').trim() : '';
   const date = dateMatch ? dateMatch[1].replace(/&nbsp;/g, ' ').replace(/\s+$/, '').trim() : '';
   const strategies = strategiesMatch ? strategiesMatch[1].replace(/&nbsp;/g, ' ').replace(/\s+$/, '').trim() : '';
+  
+  const aiProvider = providerMatch ? providerMatch[1].trim() : 'Standard Report Builder';
+  const aiModel = modelMatch ? modelMatch[1].trim() : 'None';
 
   // Extract issues from Section 3
   const issues = [];
@@ -149,6 +154,8 @@ export function parseMarkdownReport(markdown) {
     url,
     date,
     strategies,
+    aiProvider,
+    aiModel,
     issues,
     concreteFixes,
     guardrails,

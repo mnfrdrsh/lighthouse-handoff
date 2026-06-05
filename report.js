@@ -20,7 +20,9 @@ const ui = {
   metaUrl:       $('meta-url'),
   metaDate:      $('meta-date'),
   metaStrat:     $('meta-strategies'),
+  metaAi:        $('meta-ai'),
   docIssues:     $('doc-issues'),
+  docTopActions: $('doc-top-actions'),
   docFixes:      $('doc-fixes'),
   docCriteria:   $('doc-criteria'),
   docGuardrails: $('doc-guardrails'),
@@ -100,9 +102,21 @@ function render(r) {
   ui.metaUrl.href        = displayUrl;
   ui.metaDate.textContent    = new Date(r.timestamp).toLocaleString();
   ui.metaStrat.textContent   = (r.strategies || []).join(' + ').toUpperCase() || '—';
+  ui.metaAi.textContent      = parsed?.aiProvider ? `${parsed.aiProvider} · ${parsed.aiModel}` : '—';
+
+  // Extract Top Agent Actions (take the first instruction line from top 3-5 issues)
+  const topActions = (parsed?.issues || []).slice(0, 3).map(i => {
+    let action = i.agentInstructions || i.recommendedFix || i.title;
+    action = action.split('\n')[0].replace(/^-\s*/, '').trim();
+    if (!action.includes(i.title) && action.length > 10) {
+      return `**${i.title}**: ${action}`;
+    }
+    return action;
+  });
 
   // Sections
   renderIssues(parsed?.issues || []);
+  renderList(ui.docTopActions, topActions);
   renderList(ui.docFixes,      parsed?.concreteFixes      || []);
   renderList(ui.docCriteria,   parsed?.acceptanceCriteria || []);
   renderList(ui.docGuardrails, parsed?.guardrails         || []);

@@ -19,7 +19,7 @@ fun main() {
     // In a real scenario, this would be async/suspend but for Ktor setup we can start it in background
     // or just let it initialize synchronously if possible.
     // For this spike, we'll assume the engine loads async
-    // runBlocking { engine.initialize() }
+    kotlinx.coroutines.runBlocking { engine.initialize() }
     
     embeddedServer(Netty, port = port, host = "0.0.0.0") {
         install(CORS) {
@@ -56,7 +56,8 @@ fun main() {
                     } catch (e: IllegalStateException) {
                         call.respond(HttpStatusCode.ServiceUnavailable, ErrorResponse("Liquid model is not loaded.", "MODEL_NOT_READY"))
                     } catch (e: IllegalArgumentException) {
-                        call.respond(HttpStatusCode.UnprocessableEntity, ErrorResponse("Liquid model returned invalid JSON.", "INVALID_MODEL_OUTPUT"))
+                        // Pass along the raw output from the exception message for debugging
+                        call.respond(HttpStatusCode.UnprocessableEntity, ErrorResponse(e.message ?: "Liquid model returned invalid JSON.", "INVALID_MODEL_OUTPUT"))
                     }
                     
                 } catch (e: Exception) {

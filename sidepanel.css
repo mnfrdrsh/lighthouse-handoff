@@ -374,3 +374,26 @@ html, body {
   border: 1px solid rgba(245,158,11,0.2);
   white-space: nowrap;
 }
+
+/* ── Select Dropdown ──────────────────────── */
+.sp-select {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  color: var(--text);
+  padding: 8px 10px;
+  font-size: 12px;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.sp-select:focus {
+  border-color: rgba(255,255,255,0.2);
+}
+.sp-select option {
+  background: #191c25;
+  color: var(--text);
+}
+

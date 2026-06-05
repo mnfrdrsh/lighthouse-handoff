@@ -15,6 +15,7 @@ export class LiquidLocalProvider {
     this.endpoint = options.endpoint || 'http://localhost:31313/analyze';
     this.healthEndpoint = options.healthEndpoint || 'http://localhost:31313/health';
     this.timeoutMs = 25000; // 25 seconds fast-fail
+    this.model = options.model || '';
   }
 
   /**
@@ -34,7 +35,8 @@ export class LiquidLocalProvider {
       report: summary,
       rankedIssues,
       outputMode: 'cursor', // Default, options can inject actual
-      schemaVersion: '1.0'
+      schemaVersion: '1.0',
+      modelId: this.model
     };
 
     const controller = new AbortController();

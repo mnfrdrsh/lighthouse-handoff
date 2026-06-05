@@ -3,7 +3,7 @@
 
 import { generateReport }              from './report-builder.js';
 import { parseAndRank }               from './src/lighthouse/parser.js';
-import { runAnalysis, loadAISettings } from './src/ai/engine.js';
+import { runAnalysis, loadAISettings, saveAISettings } from './src/ai/engine.js';
 import { generateCombinedMarkdown }   from './src/output/markdown.js';
 
 
@@ -37,6 +37,7 @@ async function init() {
   await detectTabUrl();
   await refreshApiStatus();
   await renderRecentHistory();
+  await initModelSelector();
   bindEvents();
 
   chrome.tabs.onActivated.addListener(info =>
@@ -50,6 +51,7 @@ async function init() {
   });
   chrome.storage.onChanged.addListener((changes, ns) => {
     if (ns === 'sync' && changes.psiApiKey) refreshApiStatus();
+    if (ns === 'local' && changes.aiSettings) initModelSelector();
   });
 }
 
@@ -123,6 +125,13 @@ function bindEvents() {
   ui.btnGenerate.addEventListener('click', handleGenerate);
   ui.openOptions.addEventListener('click', () => chrome.runtime.openOptionsPage());
 
+  const modelSelect = $('model-select');
+  if (modelSelect) {
+    modelSelect.addEventListener('change', async () => {
+      await saveAISettings({ model: modelSelect.value });
+    });
+  }
+
   ui.btnHistory.addEventListener('click', showHistoryView);
   ui.btnViewAll.addEventListener('click', showHistoryView);
   ui.btnBackMain.addEventListener('click', showMainView);
@@ -151,10 +160,11 @@ async function handleGenerate() {
     if (response.success) {
       // V2: AI pipeline — normalize → analyze → generate mode-specific markdown
       let markdown;
+      let settings;
       try {
         setStatus('Analysing with AI…', 'info');
         const { summaries } = parseAndRank(response.results);
-        const settings      = await loadAISettings();
+        settings = await loadAISettings();
 
         if (summaries.length > 0) {
           // Run analysis on the primary (first) summary; multi-strategy merged by parseAndRank
@@ -162,11 +172,11 @@ async function handleGenerate() {
           markdown = generateCombinedMarkdown(analysis, summaries, settings.outputMode, settings.provider);
         } else {
           // Fallback to legacy report-builder if normalization yields nothing
-          markdown = generateReport(response.results, response.url);
+          markdown = generateReport(response.results, response.url, { settings });
         }
       } catch (aiErr) {
-        console.warn({ error: aiErr }, 'AI analysis failed, falling back to legacy report');
-        markdown = generateReport(response.results, response.url);
+        console.warn('AI analysis failed, falling back to legacy report:', aiErr);
+        markdown = generateReport(response.results, response.url, { settings });
       }
 
       const id = await saveReport({
@@ -341,6 +351,57 @@ function esc(s) {
   return String(s ?? '')
     .replace(/&/g,'&amp;').replace(/</g,'&lt;')
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function initModelSelector() {
+  const settings = await loadAISettings();
+  const provider = settings.provider || 'mock';
+  
+  const select = $('model-select');
+  if (!select) return;
+  
+  select.innerHTML = '';
+  
+  const providerModels = {
+    'mock': [
+      { id: 'mock', name: 'Mock Model' }
+    ],
+    'liquid-local': [
+      { id: 'LFM-1.3B', name: 'Liquid LFM 1.3B (Local)' },
+      { id: 'LFM2.5-350M', name: 'Liquid LFM 2.5 350M (Local)' },
+      { id: 'LFM-3B', name: 'Liquid LFM 3B (Local)' }
+    ],
+    'openai': [
+      { id: 'gpt-4o-mini', name: 'GPT-4o Mini' },
+      { id: 'gpt-4o', name: 'GPT-4o' },
+      { id: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo' }
+    ],
+    'claude': [
+      { id: 'claude-3-5-sonnet-latest', name: 'Claude 3.5 Sonnet' },
+      { id: 'claude-3-5-haiku-latest', name: 'Claude 3.5 Haiku' }
+    ],
+    'ollama': [
+      { id: 'llama3', name: 'Llama 3' },
+      { id: 'mistral', name: 'Mistral' },
+      { id: 'phi3', name: 'Phi 3' }
+    ]
+  };
+
+  const models = providerModels[provider] || [{ id: provider, name: provider }];
+  
+  models.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m.id;
+    opt.textContent = m.name;
+    select.appendChild(opt);
+  });
+  
+  const currentModel = settings.model || models[0].id;
+  select.value = currentModel;
+  
+  if (settings.model !== select.value) {
+    await saveAISettings({ model: select.value });
+  }
 }
 
 document.addEventListener('DOMContentLoaded', init);
