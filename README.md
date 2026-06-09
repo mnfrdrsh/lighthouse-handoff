@@ -11,6 +11,8 @@ Instead of "Lighthouse says X is bad", you get:
 - Strong guardrails so the agent doesn't break your site
 
 ---
+[![Security: SkillsLLM](https://skillsllm.com/security-check/badge.svg?owner=mnfrdrsh&repo=lighthouse-handoff)](https://skillsllm.com/security-check/XwTWEwG6pX8d)
+---
 
 ## Install (for anyone)
 
